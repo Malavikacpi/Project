@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { downloadCsv } from "@/lib/csv";
 import type { MatrixQuestion, MeasuresQuestion, Question, Questionnaire } from "@/lib/types";
 
 type Answers = Record<string, string>;
@@ -63,24 +62,33 @@ function MeasuresField({ question, answers, setAnswer }: FieldProps) {
     </tr>})}</tbody></table></div>;
 }
 
+/** Keeps every data-driven question in one consistent, reusable presentation. */
+function QuestionBlock({ question, answers, setAnswer }: FieldProps) {
+  return <article className={`question question-${question.type}`}><div className="question-head"><span>{question.number}</span><div><h3>{question.text}</h3>{question.type === "choice" && <p className="unit-label">Unit <strong>{question.unit}</strong></p>}</div></div>
+    {question.type === "choice" && <ChoiceField question={question} answers={answers} setAnswer={setAnswer} />}
+    {question.type === "matrix" && <MatrixField question={question} answers={answers} setAnswer={setAnswer} />}
+    {question.type === "measures" && <MeasuresField question={question} answers={answers} setAnswer={setAnswer} />}
+  </article>;
+}
+
 export default function QuestionnaireForm({ questionnaire }: { questionnaire: Questionnaire }) {
   const [answers, setAnswers] = useState<Answers>({});
   const [activeSection, setActiveSection] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
   const setAnswer = (name: string, value: string) => setAnswers((current) => ({ ...current, [name]: value }));
   const answered = useMemo(() => Object.values(answers).filter(Boolean).length, [answers]);
-  const exportAnswers = () => downloadCsv(Object.entries(answers).map(([field, value]) => [field.replaceAll("__", " — "), value]));
+  const submitQuestionnaire = () => setSubmitted(true);
 
   return <main>
     <header className="hero"><div className="hero-inner"><div><p className="eyebrow">Government &amp; infrastructure research</p><h1>{questionnaire.title}</h1><p>{questionnaire.introduction}</p></div><div className="hero-mark" aria-hidden="true"><span>CR</span><small>India power sector</small></div></div></header>
     <div className="shell">
       <aside><div className="side-heading"><p>Questionnaire</p><strong>{questionnaire.sectionLabel}</strong></div><nav aria-label="Questionnaire sections">{questionnaire.sections.map((section, index) => <button className={index === activeSection ? "active" : ""} onClick={() => { setActiveSection(index); document.getElementById(`section-${section.number}`)?.scrollIntoView({ behavior: "smooth" }); }} key={section.number}><span>{section.number.padStart(2, "0")}</span>{section.title}</button>)}</nav></aside>
-      <section className="content"><div className="toolbar"><div><span className="status-dot" /> Responses are saved in this browser session</div><button className="export" onClick={exportAnswers}>Export CSV <span>↗</span></button></div>
+      <section className="content"><div className="toolbar"><div><span className="status-dot" /> Responses are saved in this browser session</div><span className="toolbar-progress">{answered} responses entered</span></div>
         {questionnaire.sections.map((section, index) => <section className="section" id={`section-${section.number}`} key={section.number} onMouseEnter={() => setActiveSection(index)}><div className="section-title"><span>{section.number.padStart(2, "0")}</span><div><p>Climate stressor</p><h2>{section.number}. {section.title}</h2></div></div>
-          {section.questions.map((question, qIndex) => <article className="question" key={`${question.number}-${qIndex}`}><div className="question-head"><span>{question.number}</span><div><h3>{question.text}</h3>{question.type === "choice" && <p className="unit-label">Unit <strong>{question.unit}</strong></p>}</div></div>
-            {question.type === "choice" && <ChoiceField question={question} answers={answers} setAnswer={setAnswer} />}{question.type === "matrix" && <MatrixField question={question} answers={answers} setAnswer={setAnswer} />}{question.type === "measures" && <MeasuresField question={question} answers={answers} setAnswer={setAnswer} />}
-          </article>)}</section>)}
+          {section.questions.map((question, qIndex) => <QuestionBlock question={question} answers={answers} setAnswer={setAnswer} key={`${question.number}-${qIndex}`} />)}</section>)}
         <section className="section final"><div className="section-title"><span>08</span><div><p>Final details</p><h2>Comments &amp; respondent details</h2></div></div><article className="question"><label className="block-label" htmlFor="comments">Any other comments (Optional):</label><textarea id="comments" rows={6} value={answers.comments ?? ""} onChange={(e) => setAnswer("comments", e.target.value)} placeholder="Share any additional context or observations…" /></article><article className="question"><h3>Respondent Details (Optional)</h3><p className="hint">Please provide your name, organization, designation, and contact information before answering the questionnaire.</p><div className="details-grid">{["Name","Organization","Contact","Date"].map((label) => <label key={label}>{label}<input type={label === "Date" ? "date" : "text"} value={answers[`respondent_${label.toLowerCase()}`] ?? ""} onChange={(e) => setAnswer(`respondent_${label.toLowerCase()}`, e.target.value)} /></label>)}</div></article>
-        <div className="finish"><div><strong>{answered}</strong><span> responses entered</span></div><button className="export large" onClick={exportAnswers}>Download responses as CSV ↗</button></div></section>
+        <div className="finish"><div><strong>{answered}</strong><span> responses entered</span></div><button className="submit-button" type="button" onClick={submitQuestionnaire}>Submit questionnaire <span aria-hidden="true">→</span></button></div>
+        <p className={submitted ? "submission-status visible" : "submission-status"} role="status">Thank you. Your questionnaire responses have been submitted.</p></section>
       </section>
     </div>
   </main>;
