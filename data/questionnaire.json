@@ -1,0 +1,692 @@
+{
+  "title": "Questionnaire for Climate Risk and Resilience Assessment of India’s Power Sector",
+  "sectionLabel": "Section A: Power Distribution Systems",
+  "introduction": "Please answer the following questions to help assess how distribution systems are affected by climate-related stress and identify suitable resilience measures.",
+  "sections": [
+    {
+      "number": "1",
+      "title": "Maximum Temperature",
+      "questions": [
+        {
+          "type": "choice",
+          "number": "1.1",
+          "text": "At what ambient temperature does thermal derating typically begin in a distribution system?",
+          "unit": "°C",
+          "options": [
+            "<35°C",
+            "35–40°C",
+            "40–45°C",
+            "45–50°C",
+            ">50°C",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "1.2",
+          "text": "Above the thermal derating threshold, what is the typical reduction in load-serving capacity for every 1°C increase in ambient temperature?",
+          "unit": "% per °C",
+          "options": [
+            "<0.5% per °C",
+            "0.5–1% per °C",
+            "1–2% per °C",
+            "2–3% per °C",
+            ">3% per °C",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "1.3",
+          "text": "What is the maximum thermal derating typically allowed before the distribution asset enters protective shutdown or its operation is interrupted?",
+          "unit": "%",
+          "options": [
+            "<10%",
+            "10–20%",
+            "20–30%",
+            "30–50%",
+            ">50%",
+            "100% / full shutdown",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "measures",
+          "number": "1.4",
+          "text": "For each high-temperature resilience measure below, estimate the implementation cost, and provide the expected reduction in temperature-related distribution power loss.",
+          "outcomeLabel": "Expected Reduction in Power Loss (%)",
+          "unit": "INR per MW",
+          "rows": [
+            {
+              "id": "1.4-0",
+              "serial": "a",
+              "measure": "Enhanced transformer cooling system",
+              "custom": false
+            },
+            {
+              "id": "1.4-1",
+              "serial": "b",
+              "measure": "Liquid cooling system",
+              "custom": false
+            },
+            {
+              "id": "1.4-2",
+              "serial": "c",
+              "measure": "Improved substation ventilation",
+              "custom": false
+            },
+            {
+              "id": "1.4-3",
+              "serial": "d",
+              "measure": "Reflective/heat-resistant coatings",
+              "custom": false
+            },
+            {
+              "id": "1.4-4",
+              "serial": "e",
+              "measure": "Other suitable measure 1 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "1.4-5",
+              "serial": "f",
+              "measure": "Other suitable measure 2 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "1.4-6",
+              "serial": "g",
+              "measure": "Other suitable measure 3 (please specify)",
+              "custom": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "2",
+      "title": "Minimum Temperature",
+      "questions": [
+        {
+          "type": "choice",
+          "number": "2.1",
+          "text": "At what ambient temperature does low-temperature derating typically begin in a distribution system?",
+          "unit": "°C",
+          "options": [
+            ">10°C",
+            "5–10°C",
+            "0–5°C",
+            "−10–0°C",
+            "<−10°C",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "2.2",
+          "text": "Below the low-temperature derating threshold, what is the typical reduction in load-serving capacity for every 1°C decrease in ambient temperature?",
+          "unit": "% per °C",
+          "options": [
+            "<0.5% per °C",
+            "0.5–1% per °C",
+            "1–2% per °C",
+            "2–3% per °C",
+            ">3% per °C",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "2.3",
+          "text": "What is the maximum low-temperature derating typically observed before the distribution asset enters protective shutdown or its operation is interrupted?",
+          "unit": "%",
+          "options": [
+            "<10%",
+            "10–20%",
+            "20–30%",
+            "30–50%",
+            ">50%",
+            "100% / full shutdown",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "measures",
+          "number": "2.4",
+          "text": "For each low-temperature resilience measure below, estimate the implementation cost, and provide the expected reduction in distribution power loss.",
+          "outcomeLabel": "Expected Reduction in Power Loss (%)",
+          "unit": "INR per MW",
+          "rows": [
+            {
+              "id": "2.4-0",
+              "serial": "a",
+              "measure": "Pole heating systems",
+              "custom": false
+            },
+            {
+              "id": "2.4-1",
+              "serial": "b",
+              "measure": "Low-temperature lubricants",
+              "custom": false
+            },
+            {
+              "id": "2.4-2",
+              "serial": "c",
+              "measure": "Other suitable measure 1 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "2.4-3",
+              "serial": "d",
+              "measure": "Other suitable measure 2 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "2.4-4",
+              "serial": "e",
+              "measure": "Other suitable measure 3 (please specify)",
+              "custom": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "3",
+      "title": "Rainfall",
+      "questions": [
+        {
+          "type": "choice",
+          "number": "3.1",
+          "text": "At what, daily rainfall threshold does the distribution system typically begin to experience derating?",
+          "unit": "mm/day",
+          "options": [
+            "<25 mm/day",
+            "25–50 mm/day",
+            "50–100 mm/day",
+            "100–150 mm/day",
+            ">150 mm/day",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "3.2",
+          "text": "Once the rainfall threshold is exceeded, what is the typical rate of derating for every additional 10 mm/day increase in rainfall?",
+          "unit": "% per 10 mm/day",
+          "options": [
+            "<0.5% per 10 mm/day",
+            "0.5–1% per 10 mm/day",
+            "1–2% per 10 mm/day",
+            "2–5% per 10 mm/day",
+            ">5% per 10 mm/day",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "3.3",
+          "text": "During an extreme rainfall event, what is the maximum reduction in distribution-system load-serving capacity typically observed due to derating?",
+          "unit": "%",
+          "options": [
+            "<5%",
+            "5–10%",
+            "10–20%",
+            "20–30%",
+            ">30%",
+            "100% / temporary shutdown",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "measures",
+          "number": "3.4",
+          "text": "For each rainfall resilience measure below, estimate the implementation cost, and provide the expected reduction in rainfall-related distribution losses.",
+          "outcomeLabel": "Expected Reduction in Power Loss (%)",
+          "unit": "INR per MW",
+          "rows": [
+            {
+              "id": "3.4-0",
+              "serial": "a",
+              "measure": "Advanced transformer control",
+              "custom": false
+            },
+            {
+              "id": "3.4-1",
+              "serial": "b",
+              "measure": "Erosion-resistant pole coatings",
+              "custom": false
+            },
+            {
+              "id": "3.4-2",
+              "serial": "c",
+              "measure": "Other suitable measure 1 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "3.4-3",
+              "serial": "d",
+              "measure": "Other suitable measure 2 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "3.4-4",
+              "serial": "e",
+              "measure": "Other suitable measure 3 (please specify)",
+              "custom": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "4",
+      "title": "Daily Wind Stress",
+      "questions": [
+        {
+          "type": "choice",
+          "number": "4.1",
+          "text": "At what sustained wind speed does the distribution system typically begin to experience derating?",
+          "unit": "m/s",
+          "options": [
+            "<20 m/s",
+            "20–25 m/s",
+            "25–30 m/s",
+            "30–35 m/s",
+            ">35 m/s",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "4.2",
+          "text": "Above the wind derating threshold, what is the typical reduction in load-serving capacity for every 1 m/s increase in wind speed?",
+          "unit": "% per m/s",
+          "options": [
+            "<2% per m/s",
+            "2–5% per m/s",
+            "5–10% per m/s",
+            "10–20% per m/s",
+            ">20% per m/s",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "4.3",
+          "text": "What is the maximum reduction in load-serving capacity typically observed due to high winds before or during protective shutdown?",
+          "unit": "%",
+          "options": [
+            "<20%",
+            "20–40%",
+            "40–60%",
+            "60–80%",
+            "80–99%",
+            "100% / protective shutdown",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "measures",
+          "number": "4.4",
+          "text": "For each wind stress resilience measure below, estimate the implementation cost, and provide the expected reduction in high-wind-related generation losses.",
+          "outcomeLabel": "Expected Reduction in Power Loss (%)",
+          "unit": "INR per MW",
+          "rows": [
+            {
+              "id": "4.4-0",
+              "serial": "a",
+              "measure": "Pole control upgrade",
+              "custom": false
+            },
+            {
+              "id": "4.4-1",
+              "serial": "b",
+              "measure": "Other suitable measure 1 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "4.4-2",
+              "serial": "c",
+              "measure": "Other suitable measure 2 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "4.4-3",
+              "serial": "d",
+              "measure": "Other suitable measure 3 (please specify)",
+              "custom": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "5",
+      "title": "Flood",
+      "questions": [
+        {
+          "type": "matrix",
+          "number": "5.1",
+          "text": "What would be the estimated probability of significant operational, electrical, or structural failure for the following flood inundation depths: I1 and I2?",
+          "firstColumn": "Flood Inundation depth (m)",
+          "rows": [
+            {
+              "id": "5.1-1",
+              "label": "I1:",
+              "unit": "% probability"
+            },
+            {
+              "id": "5.1-2",
+              "label": "I2:",
+              "unit": "% probability"
+            }
+          ],
+          "options": [
+            "<5%",
+            "5–10%",
+            "10–25%",
+            "25–50%",
+            "50–75%",
+            ">75%",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "5.2",
+          "text": "Following a flood-induced distribution system failure or disruption, what restoration time is typically required before the distribution system can resume normal operation?",
+          "unit": "hours/days",
+          "options": [
+            "<24 hours",
+            "1-3 days",
+            "3-7 days",
+            "1-4 weeks",
+            "1-3 months",
+            ">3 months",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "5.3",
+          "text": "Following a flood-induced protective shutdown without major physical damage, what restoration time is typically required before the distribution system can resume normal operation?",
+          "unit": "hours/days",
+          "options": [
+            "<2 hours",
+            "2–6 hours",
+            "6–24 hours",
+            "1–3 days",
+            "3–7 days",
+            ">7 days",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "measures",
+          "number": "5.3",
+          "text": "For each flood-resilience measure below, estimate the implementation cost, and provide the expected reduction in flood-related failure risk.",
+          "outcomeLabel": "Expected Reduction in Failure Risk (%)",
+          "unit": "INR per MW",
+          "rows": [
+            {
+              "id": "5.3-0",
+              "serial": "a",
+              "measure": "Flood-protection bunds/embankments",
+              "custom": false
+            },
+            {
+              "id": "5.3-1",
+              "serial": "b",
+              "measure": "Foundation raising",
+              "custom": false
+            },
+            {
+              "id": "5.3-2",
+              "serial": "c",
+              "measure": "Other suitable measure 1 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "5.3-3",
+              "serial": "d",
+              "measure": "Other suitable measure 2 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "5.3-4",
+              "serial": "e",
+              "measure": "Other suitable measure 3 (please specify)",
+              "custom": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "6",
+      "title": "Cyclone",
+      "questions": [
+        {
+          "type": "matrix",
+          "number": "6.",
+          "text": "What is the estimated probability of significant operational, electrical, or structural failure in distribution systems at cyclone intensities I1 and I2?",
+          "firstColumn": "Cyclone Speed (m/s)",
+          "rows": [
+            {
+              "id": "6.-1",
+              "label": "I1",
+              "unit": "% probability"
+            },
+            {
+              "id": "6.-2",
+              "label": "I2",
+              "unit": "% probability"
+            }
+          ],
+          "options": [
+            "<5%",
+            "5–10%",
+            "10–25%",
+            "25–50%",
+            "50–75%",
+            ">75%",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "6.2",
+          "text": "Following cyclone-induced structural or major electrical failure, what restoration time is typically required before the distribution system can resume normal operation?",
+          "unit": "hours/days/months",
+          "options": [
+            "<24 hours",
+            "1–3 days",
+            "3–7 days",
+            "1–4 weeks",
+            "1–3 months",
+            ">3 months",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "6.4",
+          "text": "Following a cyclone-induced protective shutdown without major physical damage, what restoration time is typically required before the distribution system can resume normal operation?",
+          "unit": "hours/days",
+          "options": [
+            "<2 hours",
+            "2–6 hours",
+            "6–24 hours",
+            "1–3 days",
+            "3–7 days",
+            ">7 days",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "measures",
+          "number": "6.5",
+          "text": "For each cyclone-resilience measure below, estimate the implementation cost, and provide the expected reduction in cyclone-related failure risk.",
+          "outcomeLabel": "Expected Reduction in Failure Risk (%)",
+          "unit": "INR per MW",
+          "rows": [
+            {
+              "id": "6.5-0",
+              "serial": "a",
+              "measure": "Pole control upgrade",
+              "custom": false
+            },
+            {
+              "id": "6.5-1",
+              "serial": "b",
+              "measure": "Pole strengthening",
+              "custom": false
+            },
+            {
+              "id": "6.5-2",
+              "serial": "c",
+              "measure": "Typhoon-rated transformer",
+              "custom": false
+            },
+            {
+              "id": "6.5-3",
+              "serial": "d",
+              "measure": "Other suitable measure 1 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "6.5-4",
+              "serial": "e",
+              "measure": "Other suitable measure 2 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "6.5-5",
+              "serial": "f",
+              "measure": "Other suitable measure 3 (please specify)",
+              "custom": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": "7",
+      "title": "Landslide",
+      "questions": [
+        {
+          "type": "matrix",
+          "number": "7.1",
+          "text": "What would be the estimated probability of significant operational, electrical, or structural failure for the following landslide events: low-intensity event and high-intensity event?",
+          "firstColumn": "Event",
+          "rows": [
+            {
+              "id": "7.1-1",
+              "label": "Low-intensity event",
+              "unit": "% probability"
+            },
+            {
+              "id": "7.1-2",
+              "label": "High-intensity event",
+              "unit": "% probability"
+            }
+          ],
+          "options": [
+            "<5%",
+            "5–10%",
+            "10–25%",
+            "25–50%",
+            "50–75%",
+            ">75%",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "7.2",
+          "text": "Following landslide-induced structural or major electrical failure, what restoration time is typically required before the distribution system can resume normal operation?",
+          "unit": "hours/days/months",
+          "options": [
+            "<24 hours",
+            "1–3 days",
+            "3–7 days",
+            "1–4 weeks",
+            "1–3 months",
+            ">3 months",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "choice",
+          "number": "7.3",
+          "text": "Following a landslide-induced protective shutdown without major physical damage, what restoration time is typically required before the distribution system can resume normal operation?",
+          "unit": "hours/days",
+          "options": [
+            "<2 hours",
+            "2–6 hours",
+            "6–24 hours",
+            "1–3 days",
+            "3–7 days",
+            ">7 days",
+            "Other (please specify)",
+            "Not sure / insufficient data"
+          ]
+        },
+        {
+          "type": "measures",
+          "number": "7.4",
+          "text": "For each landslide-resilience measure below, indicate whether it is applicable, estimate the implementation cost, and provide the expected reduction in landslide-related failure risk.",
+          "outcomeLabel": "Expected Reduction in Failure Risk (%)",
+          "unit": "INR per MW",
+          "rows": [
+            {
+              "id": "7.4-0",
+              "serial": "a",
+              "measure": "Land preparation and slope stabilization",
+              "custom": false
+            },
+            {
+              "id": "7.4-1",
+              "serial": "b",
+              "measure": "Other suitable measure 1 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "7.4-2",
+              "serial": "c",
+              "measure": "Other suitable measure 2 (please specify)",
+              "custom": true
+            },
+            {
+              "id": "7.4-3",
+              "serial": "d",
+              "measure": "Other suitable measure 3 (please specify)",
+              "custom": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
