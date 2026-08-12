@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Climate Risk and Resilience Assessment of Power Sector Assets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --panel:#FDF8F7;
+    --panel-hover:#FAF0EF;
+    --border:#E8DBDA;
+    --border-soft:#F0E4E3;
+    --text:#231314;
+    --text-muted:#7C6362;
+    --text-faint:#A9908F;
+    --accent: #8C1C24;
+    --accent-soft: rgba(140,28,36,0.09);
+    --accent-solar:#8C1C24;
+    --accent-wind:#A8303A;
+    --accent-thermal:#6B0F17;
+    --accent-distribution:#B23A44;
+    --accent-transmission:#7A1F2B;
+    --good:#5FBF8A;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'IBM Plex Sans', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:var(--bg); color:var(--text); font-family:var(--font-body); min-height:100vh;}
+  body{
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(140,28,36,0.05), transparent 40%),
+      radial-gradient(circle at 85% 15%, rgba(107,15,23,0.04), transparent 40%);
+  }
+  ::selection{ background: var(--accent); color:#FFFFFF; }
+
+  a{color:inherit;}
+  button{font-family:inherit; cursor:pointer;}
+
+  .shell{ max-width:920px; margin:0 auto; padding: 28px 24px 100px; }
+
+  /* ---------- status strip ---------- */
+  .status-strip{
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--text-muted);
+    padding-bottom:16px; margin-bottom:28px;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .status-strip .left{ display:flex; align-items:center; gap:10px; }
+  .dot{
+    width:7px; height:7px; border-radius:50%; background:var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+    animation: pulse 2.2s ease-in-out infinite;
+    transition: background .4s ease, box-shadow .4s ease;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity:1; } 50%{ opacity:0.45; }
+  }
+  .status-strip .stage-label{ color:var(--text); }
+  .status-strip .crumb{ color:var(--text-faint); }
+  .status-strip .crumb b{ color: var(--accent); font-weight:500; transition: color .4s ease;}
+
+  /* ---------- hero ---------- */
+  .hero{ margin-bottom: 34px; }
+  .hero h1{
+    font-family:var(--font-display); font-weight:600; font-size:clamp(28px,4.4vw,40px);
+    letter-spacing:-0.01em; line-height:1.08; margin-bottom:12px;
+  }
+  .hero p{ color:var(--text-muted); font-size:15px; line-height:1.6; max-width:60ch; }
+
+  .stage{ animation: fade .35s ease; }
+  @keyframes fade{ from{ opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .section-label{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--text-faint); margin-bottom:14px; display:flex; align-items:center; gap:8px;
+  }
+  .section-label::before{ content:''; width:14px; height:1px; background:var(--text-faint); }
+
+  /* ---------- asset cards ---------- */
+  .asset-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  @media (max-width:640px){ .asset-grid{ grid-template-columns:1fr; } }
+
+  .asset-card{
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:20px 18px; text-align:left; transition:all .18s ease; position:relative; overflow:hidden;
+  }
+  .asset-card:hover{ background:var(--panel-hover); border-color: var(--card-accent, var(--border)); transform:translateY(-2px); }
+  .asset-card .icon{ width:26px; height:26px; color:var(--card-accent, var(--text)); margin-bottom:14px; }
+  .asset-card .name{ font-family:var(--font-display); font-size:17px; font-weight:600; margin-bottom:5px; }
+  .asset-card .desc{ font-size:12.5px; color:var(--text-muted); line-height:1.5; }
+  .asset-card .bar{ position:absolute; top:0; left:0; height:2px; width:100%; background:var(--card-accent,transparent); opacity:0; transition:opacity .18s ease; }
+  .asset-card:hover .bar{ opacity:1; }
+
+  .sub-panel{ margin-top:14px; padding-top:14px; border-top:1px dashed var(--border); animation: fade .3s ease; }
+  .back-link{
+    font-family:var(--font-mono); font-size:12px; color:var(--text-muted); background:none; border:none;
+    display:inline-flex; align-items:center; gap:6px; margin-bottom:18px; padding:0;
+  }
+  .back-link:hover{ color:var(--text); }
+
+  /* ---------- stressor chips ---------- */
+  .stress-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+  @media (max-width:640px){ .stress-grid{ grid-template-columns:1fr; } }
+
+  .stress-chip{
+    display:flex; align-items:center; gap:12px;
+    background:var(--panel); border:1px solid var(--border); border-radius:9px;
+    padding:13px 14px; transition:all .15s ease; text-align:left;
+  }
+  .stress-chip:hover{ border-color:var(--border-soft); background:var(--panel-hover); }
+  .stress-chip.active{ border-color: var(--accent); background: var(--accent-soft); }
+  .stress-chip .icon{ width:19px; height:19px; flex-shrink:0; color:var(--text-muted); transition:color .15s ease; }
+  .stress-chip.active .icon{ color:var(--accent); }
+  .stress-chip .label{ font-size:13.5px; font-weight:500; flex:1; }
+  .stress-chip .box{
+    width:16px; height:16px; border-radius:4px; border:1.5px solid var(--border); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; transition:all .15s ease;
+  }
+  .stress-chip.active .box{ background:var(--accent); border-color:var(--accent); }
+  .stress-chip.active .box svg{ width:10px; height:10px; color:#FFFFFF; }
+
+  .continue-row{ display:flex; align-items:center; justify-content:space-between; margin-top:26px; }
+  .count-hint{ font-family:var(--font-mono); font-size:12px; color:var(--text-faint); }
+
+  .btn-primary{
+    font-family:var(--font-mono); font-size:12.5px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase;
+    background:var(--accent); color:#FFFFFF; border:none; border-radius:7px; padding:12px 20px;
+    display:inline-flex; align-items:center; gap:8px; transition: all .15s ease;
+  }
+  .btn-primary:hover{ filter:brightness(1.08); transform:translateY(-1px); }
+  .btn-primary:disabled{ opacity:0.35; pointer-events:none; }
+
+  .btn-ghost{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em; text-transform:uppercase;
+    background:transparent; color:var(--text-muted); border:1px solid var(--border); border-radius:7px; padding:10px 16px;
+  }
+  .btn-ghost:hover{ color:var(--text); border-color:var(--text-faint); }
+
+  /* ---------- stage 3: tabs ---------- */
+  .tab-strip{ display:flex; gap:6px; overflow-x:auto; padding-bottom:14px; margin-bottom:22px; border-bottom:1px solid var(--border-soft); }
+  .tab-strip::-webkit-scrollbar{ height:4px; }
+  .tab-strip::-webkit-scrollbar-thumb{ background:var(--border); border-radius:4px; }
+  .tab{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:0.03em; white-space:nowrap;
+    background:transparent; border:1px solid var(--border); color:var(--text-muted);
+    padding:8px 13px; border-radius:20px; display:flex; align-items:center; gap:7px; transition:all .15s ease;
+    flex-shrink:0;
+  }
+  .tab .icon{ width:13px; height:13px; }
+  .tab.active{ background:var(--accent-soft); border-color:var(--accent); color:var(--text); }
+
+  .assess-header{ display:flex; align-items:center; gap:14px; margin-bottom:26px; }
+  .assess-header .icon-badge{
+    width:44px; height:44px; border-radius:10px; background:var(--accent-soft); border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .assess-header .icon-badge svg{ width:22px; height:22px; color:var(--accent); }
+  .assess-header h2{ font-family:var(--font-display); font-size:22px; font-weight:600; }
+  .assess-header .sub{ font-size:12.5px; color:var(--text-muted); font-family:var(--font-mono); margin-top:2px; }
+
+  .category{ margin-bottom:22px; border:1px solid var(--border); border-radius:10px; background:var(--panel); overflow:hidden; }
+  .category-head{
+    display:flex; align-items:center; justify-content:space-between; padding:15px 18px; cursor:pointer;
+    user-select:none;
+  }
+  .category-head .title{ display:flex; align-items:center; gap:10px; }
+  .category-head .title .tag{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--accent); background:var(--accent-soft); padding:3px 8px; border-radius:5px;
+  }
+  .category-head .title span.name{ font-family:var(--font-display); font-weight:600; font-size:15.5px; }
+  .category-head .chev{ width:16px; height:16px; color:var(--text-faint); transition:transform .2s ease; }
+  .category.open .chev{ transform:rotate(180deg); }
+
+  .category-body{ display:none; padding:4px 18px 20px; border-top:1px solid var(--border-soft); }
+  .category.open .category-body{ display:block; }
+
+  .q-row{ padding:16px 0; border-bottom:1px solid var(--border-soft); }
+  .q-row:last-child{ border-bottom:none; }
+  .q-row label{ display:block; font-size:13.5px; line-height:1.5; margin-bottom:9px; color:var(--text); }
+  .q-row label .qn{ font-family:var(--font-mono); color:var(--text-faint); margin-right:8px; }
+  .q-row textarea, .q-row input[type=text]{
+    width:100%; background:#0D1317; border:1px solid var(--border); border-radius:7px; color:var(--text);
+    font-family:var(--font-body); font-size:13.5px; padding:10px 12px; resize:vertical; min-height:40px;
+    transition:border-color .15s ease;
+  }
+  .q-row textarea:focus, .q-row input[type=text]:focus{ outline:none; border-color:var(--accent); }
+  .q-row textarea::placeholder, .q-row input::placeholder{ color:var(--text-faint); }
+
+  .footer-row{ display:flex; align-items:center; justify-content:space-between; margin-top:30px; flex-wrap:wrap; gap:12px; }
+  .placeholder-note{
+    font-family:var(--font-mono); font-size:11px; color:var(--text-faint); border:1px dashed var(--border);
+    border-radius:8px; padding:12px 14px; margin-bottom:22px; line-height:1.6;
+  }
+  .placeholder-note b{ color:var(--text-muted); }
+
+  @media (prefers-reduced-motion: reduce){
+    .dot{ animation:none; } .stage{ animation:none; }
+  }
+  .visually-hidden{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+  button:focus-visible, .asset-card:focus-visible, .stress-chip:focus-visible, .tab:focus-visible{
+    outline:2px solid var(--accent); outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="status-strip">
+      <div class="left">
+        <span class="dot" id="statusDot"></span>
+        <span class="stage-label" id="stageLabel">STAGE 01 · SELECT ASSET</span>
+      </div>
+      <div class="crumb" id="crumb"></div>
+    </div>
+
+    <div class="hero">
+      <h1>Climate Risk and Resilience Assessment of Power Sector Assets</h1>
+      <p>Select an asset, map the climate stresses it faces, then work through derating impact, resilience measures and cost for each one.</p>
+    </div>
+
+    <div id="app"></div>
+  </div>
+
+<script>
+/* ============ EDIT YOUR CONTENT HERE ============
+   QUESTION_SETS holds the placeholder question text shown in each
+   category (derating / resilience / cost) for every climate stressor.
+   Replace the strings below with your real question set — everything
+   else in the file (layout, state, rendering) will keep working as-is.
+   Structure: QUESTION_SETS[stressorId][categoryKey] = [ "question 1", "question 2", ... ]
+   If a stressor has no entry, DEFAULT_QUESTIONS is used instead.
+================================================== */
+const DEFAULT_QUESTIONS = {
+  derating: [
+    "What is the expected derating (% output loss) of this asset under this stress condition?",
+    "At what threshold value does derating begin to occur?"
+  ],
+  resilience: [
+    "What resilience or adaptation measures are currently in place for this stress?",
+    "What additional measures would reduce exposure, and what is their expected effectiveness?"
+  ],
+  cost: [
+    "What is the estimated cost of implementing the above resilience measure(s)?",
+    "What is the estimated cost of inaction (unmitigated exposure) over the asset's remaining life?"
+  ]
+};
+const QUESTION_SETS = {
+  // temp_max: { derating:[...], resilience:[...], cost:[...] },
+};
+
+const CATEGORY_META = [
+  { key: "derating",   name: "Derating",           tag: "01" },
+  { key: "resilience", name: "Resilience Measures", tag: "02" },
+  { key: "cost",       name: "Cost",                tag: "03" }
+];
+
+/* ============ ASSET STRUCTURE ============ */
+const ASSETS = {
+  generation: {
+    label: "Generation", color: "var(--accent-solar)", icon: "bolt",
+    desc: "Solar, wind and thermal generation assets.",
+    children: {
+      solar:   { label: "Solar",   color: "var(--accent-solar)",   icon: "sun",   desc: "PV and CSP generation." },
+      wind:    { label: "Wind",    color: "var(--accent-wind)",    icon: "wind",  desc: "Onshore & offshore turbines." },
+      thermal: { label: "Thermal", color: "var(--accent-thermal)", icon: "flame", desc: "Coal, gas & steam plant." }
+    }
+  },
+  distribution: {
+    label: "Distribution", color: "var(--accent-distribution)", icon: "network",
+    desc: "Feeders, transformers and substations."
+  },
+  transmission: {
+    label: "Transmission", color: "var(--accent-transmission)", icon: "tower",
+    desc: "High-voltage lines and towers."
+  }
+};
+
+const STRESSORS = [
+  { id: "temp_max",      label: "Temp Max",           icon: "thermo-hot" },
+  { id: "temp_min",      label: "Temp Min",           icon: "thermo-cold" },
+  { id: "flood",         label: "Flood",               icon: "flood" },
+  { id: "drought",       label: "Drought",             icon: "drought" },
+  { id: "high_wind",     label: "High Wind",           icon: "gust" },
+  { id: "wildfire",      label: "Wildfire",            icon: "fire" },
+  { id: "snow_ice",      label: "Snow / Ice",          icon: "snow" },
+  { id: "humidity",      label: "Humidity",            icon: "droplet" },
+  { id: "sea_level",     label: "Sea Level Rise",      icon: "sea" },
+  { id: "precipitation", label: "Heavy Precipitation", icon: "rain" }
+];
+
+/* ============ ICONS ============ */
+const ICONS = {
+  bolt: `<path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/>`,
+  sun: `<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>`,
+  wind: `<path d="M3 8h9a3 3 0 1 0-2.5-4.6"/><path d="M3 14h13a3 3 0 1 1-2.5 4.7"/><path d="M3 11h5"/>`,
+  flame: `<path d="M12 2c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1.2-.6-2-1-3 1.5.7 3 2.6 3 5a5 5 0 0 1-10 0c0-4 3-6 5-10Z"/>`,
+  network: `<circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M6.7 7.3 11 16M17.3 7.3 13 16M7 6h10"/>`,
+  tower: `<path d="M12 2 6 22M12 2l6 20M9 8h6M7.5 13h9M6 18h12M4 22h16"/>`,
+  "thermo-hot": `<path d="M12 3a2 2 0 0 0-2 2v9.5a4 4 0 1 0 4 0V5a2 2 0 0 0-2-2Z"/><path d="M12 8v6"/><path d="M18 5l2-2M19 8h2"/>`,
+  "thermo-cold": `<path d="M12 3a2 2 0 0 0-2 2v9.5a4 4 0 1 0 4 0V5a2 2 0 0 0-2-2Z"/><path d="M12 8v6"/><path d="m17 5 1.5 1.5M19.5 3.5 21 5"/>`,
+  flood: `<path d="M2 15c1.5-1.5 3-1.5 4.5 0s3 1.5 4.5 0 3-1.5 4.5 0 3 1.5 4.5 0"/><path d="M2 19c1.5-1.5 3-1.5 4.5 0s3 1.5 4.5 0 3-1.5 4.5 0 3 1.5 4.5 0"/><path d="M12 3v8M9 8l3 3 3-3"/>`,
+  drought: `<path d="M3 20h18"/><path d="M4 20 9 8l2.5 6L14 9l3 11"/><circle cx="18" cy="6" r="2.2"/>`,
+  gust: `<path d="M2 7h11a2.5 2.5 0 1 0-2-4"/><path d="M2 12h16a2.5 2.5 0 1 1-2 4"/><path d="M2 17h9"/>`,
+  fire: `<path d="M12 2c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1.2-.6-2-1-3 1.5.7 3 2.6 3 5a5 5 0 0 1-10 0c0-4 3-6 5-10Z"/><path d="M4 22h16"/>`,
+  snow: `<path d="M12 2v20M4.2 6l15.6 12M19.8 6 4.2 18"/><path d="M12 6 9.5 4M12 6l2.5-2M12 18l-2.5 2M12 18l2.5 2M6 9 4 8.5M6 9l-1 2.3M18 15l2 .5M18 15l1-2.3M6 15l-2 .5M6 15l1 2.3M18 9l2-.5M18 9l-1-2.3"/>`,
+  droplet: `<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/>`,
+  sea: `<path d="M2 12c1.5-1.5 3-1.5 4.5 0s3 1.5 4.5 0 3-1.5 4.5 0 3 1.5 4.5 0"/><path d="M2 17c1.5-1.5 3-1.5 4.5 0s3 1.5 4.5 0 3-1.5 4.5 0 3 1.5 4.5 0"/><path d="M6 8 12 2l6 6M12 2v6"/>`,
+  rain: `<path d="M6 14a4.5 4.5 0 0 1 .5-9 6 6 0 0 1 11.4 1.8A4 4 0 0 1 17 14H6Z"/><path d="M8 18v2M12 18v2M16 18v2"/>`,
+  check: `<path d="M20 6 9 17l-5-5"/>`,
+  chevDown: `<path d="m6 9 6 6 6-6"/>`,
+  arrowRight: `<path d="M5 12h14M13 6l6 6-6 6"/>`,
+  arrowLeft: `<path d="M19 12H5M11 18l-6-6 6-6"/>`,
+  download: `<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/>`
+};
+function icon(name, extra=""){
+  return `<svg class="icon ${extra}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]||""}</svg>`;
+}
+
+/* ============ STATE ============ */
+const state = {
+  stage: 1,
+  topAsset: null,     // 'generation' | 'distribution' | 'transmission'
+  subAsset: null,      // 'solar' | 'wind' | 'thermal' | null
+  selectedStress: [],  // array of stressor ids
+  activeTab: 0,
+  openCategory: { derating: true, resilience: false, cost: false },
+  answers: {}          // answers[stressorId][categoryKey][index] = text
+};
+
+function currentAssetCtx(){
+  if(state.topAsset === "generation" && state.subAsset){
+    const a = ASSETS.generation.children[state.subAsset];
+    return { key: state.subAsset, label: a.label, color: a.color, icon: a.icon, parent: "Generation" };
+  }
+  if(state.topAsset && ASSETS[state.topAsset] && !ASSETS[state.topAsset].children){
+    const a = ASSETS[state.topAsset];
+    return { key: state.topAsset, label: a.label, color: a.color, icon: a.icon, parent: null };
+  }
+  return null;
+}
+
+function setAccent(color){
+  document.documentElement.style.setProperty("--accent", color);
+  document.documentElement.style.setProperty("--accent-soft", colorToSoft(color));
+}
+function colorToSoft(cssVar){
+  const map = {
+    "var(--accent-solar)": "rgba(140,28,36,0.09)",
+    "var(--accent-wind)": "rgba(168,48,58,0.09)",
+    "var(--accent-thermal)": "rgba(107,15,23,0.09)",
+    "var(--accent-distribution)": "rgba(178,58,68,0.09)",
+    "var(--accent-transmission)": "rgba(122,31,43,0.09)"
+  };
+  return map[cssVar] || "rgba(140,28,36,0.09)";
+}
+
+/* ============ RENDER ============ */
+const app = document.getElementById("app");
+const stageLabel = document.getElementById("stageLabel");
+const crumb = document.getElementById("crumb");
+
+function render(){
+  const ctx = currentAssetCtx();
+  if(ctx) setAccent(ctx.color); else setAccent("#8C1C24");
+
+  if(state.stage === 1) return renderStage1();
+  if(state.stage === 2) return renderStage2();
+  if(state.stage === 3) return renderStage3();
+}
+
+function renderStage1(){
+  stageLabel.textContent = "STAGE 01 · SELECT ASSET";
+  crumb.innerHTML = "";
+
+  if(state.topAsset === "generation"){
+    const kids = ASSETS.generation.children;
+    app.innerHTML = `
+      <div class="stage">
+        <div class="section-label">Asset Type</div>
+        <div class="asset-grid">${topCardsHTML(true)}</div>
+        <div class="sub-panel">
+          <div class="section-label">Generation · Choose Type</div>
+          <div class="asset-grid">
+            ${Object.entries(kids).map(([key,a])=>`
+              <button class="asset-card" style="--card-accent:${a.color}" data-sub="${key}">
+                <span class="bar"></span>
+                ${icon(a.icon)}
+                <div class="name">${a.label}</div>
+                <div class="desc">${a.desc}</div>
+              </button>
+            `).join("")}
+          </div>
+        </div>
+      </div>`;
+    app.querySelectorAll("[data-sub]").forEach(el=>{
+      el.addEventListener("click", ()=>{ state.subAsset = el.dataset.sub; state.stage = 2; render(); });
+    });
+  } else {
+    app.innerHTML = `
+      <div class="stage">
+        <div class="section-label">Asset Type</div>
+        <div class="asset-grid">${topCardsHTML(false)}</div>
+      </div>`;
+  }
+
+  app.querySelectorAll("[data-top]").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      const key = el.dataset.top;
+      state.topAsset = key;
+      state.subAsset = null;
+      if(!ASSETS[key].children){ state.stage = 2; }
+      render();
+    });
+  });
+}
+
+function topCardsHTML(compact){
+  return Object.entries(ASSETS).map(([key,a])=>`
+    <button class="asset-card" style="--card-accent:${a.color}" data-top="${key}">
+      <span class="bar"></span>
+      ${icon(a.icon)}
+      <div class="name">${a.label}</div>
+      ${compact ? "" : `<div class="desc">${a.desc}</div>`}
+    </button>
+  `).join("");
+}
+
+function renderStage2(){
+  const ctx = currentAssetCtx();
+  stageLabel.textContent = "STAGE 02 · CLIMATE STRESS EXPOSURE";
+  crumb.innerHTML = `${ctx.parent ? ctx.parent+" / " : ""}<b>${ctx.label}</b>`;
+
+  app.innerHTML = `
+    <div class="stage">
+      <button class="back-link" id="backBtn">${icon("arrowLeft")} Change asset</button>
+      <div class="section-label">Question 01</div>
+      <h2 style="font-family:var(--font-display); font-size:19px; font-weight:600; margin-bottom:18px;">
+        Which climate stresses affect ${ctx.label.toLowerCase()}?
+      </h2>
+      <div class="stress-grid">
+        ${STRESSORS.map(s=>`
+          <button class="stress-chip ${state.selectedStress.includes(s.id)?'active':''}" data-stress="${s.id}">
+            ${icon(s.icon)}
+            <span class="label">${s.label}</span>
+            <span class="box">${icon("check")}</span>
+          </button>
+        `).join("")}
+      </div>
+      <div class="continue-row">
+        <span class="count-hint">${state.selectedStress.length} selected</span>
+        <button class="btn-primary" id="continueBtn" ${state.selectedStress.length===0?"disabled":""}>
+          Generate assessment ${icon("arrowRight")}
+        </button>
+      </div>
+    </div>`;
+
+  app.querySelector("#backBtn").addEventListener("click", ()=>{
+    state.stage = 1;
+    if(state.topAsset !== "generation") state.topAsset = null;
+    render();
+  });
+  app.querySelectorAll("[data-stress]").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      const id = el.dataset.stress;
+      const i = state.selectedStress.indexOf(id);
+      if(i>-1) state.selectedStress.splice(i,1); else state.selectedStress.push(id);
+      render();
+    });
+  });
+  const cbtn = app.querySelector("#continueBtn");
+  if(cbtn) cbtn.addEventListener("click", ()=>{
+    state.activeTab = 0;
+    state.stage = 3;
+    render();
+  });
+}
+
+function renderStage3(){
+  const ctx = currentAssetCtx();
+  const stressors = STRESSORS.filter(s=>state.selectedStress.includes(s.id));
+  const active = stressors[state.activeTab] || stressors[0];
+  stageLabel.textContent = "STAGE 03 · ASSESSMENT";
+  crumb.innerHTML = `${ctx.parent ? ctx.parent+" / " : ""}<b>${ctx.label}</b> / ${active.label}`;
+
+  if(!state.answers[active.id]) state.answers[active.id] = { derating:[], resilience:[], cost:[] };
+
+  app.innerHTML = `
+    <div class="stage">
+      <button class="back-link" id="backBtn">${icon("arrowLeft")} Edit climate stresses</button>
+
+      <div class="tab-strip">
+        ${stressors.map((s,i)=>`
+          <button class="tab ${i===state.activeTab?'active':''}" data-tab="${i}">
+            ${icon(s.icon)} ${s.label}
+          </button>
+        `).join("")}
+      </div>
+
+      <div class="assess-header">
+        <div class="icon-badge">${icon(active.icon)}</div>
+        <div>
+          <h2>${active.label}</h2>
+          <div class="sub">${ctx.label.toUpperCase()} · EXPOSURE ${state.activeTab+1} OF ${stressors.length}</div>
+        </div>
+      </div>
+
+      <div class="placeholder-note">
+        <b>Placeholder questions.</b> These are samples — drop your real question set into the
+        <b>QUESTION_SETS</b> object near the top of this file's script, keyed by stressor id
+        (e.g. <b>${active.id}</b>) and category (derating / resilience / cost).
+      </div>
+
+      ${CATEGORY_META.map(cat=>categoryHTML(active.id, cat)).join("")}
+
+      <div class="footer-row">
+        <button class="btn-ghost" id="downloadBtn">${icon("download")} Download responses (JSON)</button>
+        ${stressors.length>1 ? `<button class="btn-primary" id="nextTabBtn">Next stressor ${icon("arrowRight")}</button>` : ""}
+      </div>
+    </div>`;
+
+  app.querySelector("#backBtn").addEventListener("click", ()=>{ state.stage = 2; render(); });
+  app.querySelectorAll("[data-tab]").forEach(el=>{
+    el.addEventListener("click", ()=>{ state.activeTab = parseInt(el.dataset.tab,10); render(); });
+  });
+  app.querySelectorAll(".category-head").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      const key = el.dataset.cat;
+      state.openCategory[key] = !state.openCategory[key];
+      render();
+    });
+  });
+  app.querySelectorAll("textarea[data-ans]").forEach(el=>{
+    el.addEventListener("input", ()=>{
+      const [sid, cat, idx] = el.dataset.ans.split("::");
+      if(!state.answers[sid]) state.answers[sid] = { derating:[], resilience:[], cost:[] };
+      state.answers[sid][cat][idx] = el.value;
+    });
+  });
+  const nextBtn = app.querySelector("#nextTabBtn");
+  if(nextBtn) nextBtn.addEventListener("click", ()=>{
+    state.activeTab = (state.activeTab + 1) % stressors.length;
+    render();
+  });
+  app.querySelector("#downloadBtn").addEventListener("click", downloadResponses);
+}
+
+function categoryHTML(stressorId, cat){
+  const questions = (QUESTION_SETS[stressorId] && QUESTION_SETS[stressorId][cat.key]) || DEFAULT_QUESTIONS[cat.key];
+  const isOpen = state.openCategory[cat.key];
+  const savedAnswers = (state.answers[stressorId] && state.answers[stressorId][cat.key]) || [];
+  return `
+    <div class="category ${isOpen?'open':''}">
+      <div class="category-head" data-cat="${cat.key}">
+        <div class="title">
+          <span class="tag">${cat.tag}</span>
+          <span class="name">${cat.name}</span>
+        </div>
+        ${icon("chevDown","chev")}
+      </div>
+      <div class="category-body">
+        ${questions.map((q,i)=>`
+          <div class="q-row">
+            <label><span class="qn">Q${i+1}</span>${q}</label>
+            <textarea rows="2" placeholder="Enter response…" data-ans="${stressorId}::${cat.key}::${i}">${savedAnswers[i]||""}</textarea>
+          </div>
+        `).join("")}
+      </div>
+    </div>`;
+}
+
+function downloadResponses(){
+  const ctx = currentAssetCtx();
+  const payload = {
+    asset: ctx.label,
+    parent: ctx.parent,
+    stressors: state.selectedStress,
+    answers: state.answers,
+    generatedAt: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(payload,null,2)], { type:"application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = `resilience-assessment-${ctx.key}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+render();
+</script>
+</body>
+</html>
