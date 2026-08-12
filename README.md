@@ -1,6 +1,6 @@
 # Climate Risk & Resilience Questionnaire
 
-A production-ready Next.js questionnaire transcribed from `CR-DistributionSystem_Questionnaire.docx`. The form is rendered dynamically from structured JSON, supports responsive table inputs, optional respondent details, and local CSV export.
+A production-ready Next.js questionnaire transcribed from `CR-DistributionSystem_Questionnaire.docx`. The guided assessment supports asset and multi-stressor selection, dynamically rendered sections, responsive table inputs, and persistent browser state.
 
 ## Run locally
 
@@ -14,8 +14,8 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Data and architecture
 
 - `data/questionnaire.json` is the source of truth for all seven climate-stressor sections, original question numbering, response options, units, and resilience-measure table rows.
-- `components/QuestionnaireForm.tsx` dynamically renders choice, matrix, and measures question types.
-- `lib/csv.ts` converts all entered responses into a UTF-8 CSV file entirely in the browser; responses are never sent to a server.
+- `components/QuestionnaireForm.tsx` provides the guided flow and dynamically renders choice, matrix, and measures question types.
+- In-progress and submitted responses are stored locally in the respondent's browser; no public CSV download is shown.
 
 ## Deploy to Vercel
 
