@@ -24,6 +24,8 @@ export function ensureSchema() {
       CREATE TABLE IF NOT EXISTS questionnaire_responses (
         id bigserial PRIMARY KEY,
         submission_id uuid NOT NULL REFERENCES questionnaire_submissions(id) ON DELETE CASCADE,
+        system_category text NOT NULL,
+        asset_name text NOT NULL,
         section_code text NOT NULL,
         section_heading text NOT NULL,
         asset_system text NOT NULL,
@@ -34,6 +36,8 @@ export function ensureSchema() {
         selected_response text NOT NULL
       )
     `;
+    await sql`ALTER TABLE questionnaire_responses ADD COLUMN IF NOT EXISTS system_category text`;
+    await sql`ALTER TABLE questionnaire_responses ADD COLUMN IF NOT EXISTS asset_name text`;
     await sql`CREATE INDEX IF NOT EXISTS questionnaire_responses_submission_idx ON questionnaire_responses(submission_id)`;
   })().catch((error) => {
     schemaPromise = null;

@@ -20,4 +20,4 @@ GET /api/admin/responses.xlsx
 Authorization: Bearer <ADMIN_EXPORT_TOKEN>
 ```
 
-The workbook contains one row per question response, including submission ID, timestamp, section metadata, asset/system, original question number and wording, unit, and the selected response.
+The workbook contains one row per question response, including submission ID, timestamp, system, asset, section metadata, climate stress, original question number and wording, unit, and the selected response.

@@ -17,6 +17,8 @@ export type ScopeMetadata = {
   questionnaire: Questionnaire;
   sectionCode: "A" | "B" | "C";
   sectionHeading: string;
+  system: "Generation" | "Transmission" | "Distribution";
+  asset: string;
   assetSystem: string;
 };
 
@@ -27,11 +29,11 @@ export function isQuestionnaireScope(value: unknown): value is QuestionnaireScop
 }
 
 export function getScopeMetadata(scope: QuestionnaireScope): ScopeMetadata {
-  if (scope === "solar") return { questionnaire: questionnaires.generation.solar, sectionCode: "A", sectionHeading: "Section A: Generation Assets", assetSystem: "Solar Power Plant" };
-  if (scope === "wind") return { questionnaire: questionnaires.generation.wind, sectionCode: "A", sectionHeading: "Section A: Generation Assets", assetSystem: "Wind Power Plant" };
-  if (scope === "thermal") return { questionnaire: questionnaires.generation.thermal, sectionCode: "A", sectionHeading: "Section A: Generation Assets", assetSystem: "Thermal Power Plant" };
-  if (scope === "transmission") return { questionnaire: questionnaires.transmission, sectionCode: "B", sectionHeading: "Section B: Transmission System", assetSystem: "Transmission System" };
-  return { questionnaire: questionnaires.distribution, sectionCode: "C", sectionHeading: "Section C: Distribution System", assetSystem: "Distribution System" };
+  if (scope === "solar") return { questionnaire: questionnaires.generation.solar, sectionCode: "A", sectionHeading: "Section A: Generation Assets", system: "Generation", asset: "Solar Power Plant", assetSystem: "Solar Power Plant" };
+  if (scope === "wind") return { questionnaire: questionnaires.generation.wind, sectionCode: "A", sectionHeading: "Section A: Generation Assets", system: "Generation", asset: "Wind Power Plant", assetSystem: "Wind Power Plant" };
+  if (scope === "thermal") return { questionnaire: questionnaires.generation.thermal, sectionCode: "A", sectionHeading: "Section A: Generation Assets", system: "Generation", asset: "Thermal Power Plant", assetSystem: "Thermal Power Plant" };
+  if (scope === "transmission") return { questionnaire: questionnaires.transmission, sectionCode: "B", sectionHeading: "Section B: Transmission System", system: "Transmission", asset: "Transmission System", assetSystem: "Transmission System" };
+  return { questionnaire: questionnaires.distribution, sectionCode: "C", sectionHeading: "Section C: Distribution System", system: "Distribution", asset: "Distribution System", assetSystem: "Distribution System" };
 }
 
 export function findQuestion(scope: QuestionnaireScope, questionNumber: string, questionText: string) {

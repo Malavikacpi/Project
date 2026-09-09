@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     await ensureSchema();
     const sql = getDatabase();
     const rows = await sql`
-      SELECT r.submission_id, s.submitted_at, r.section_code, r.section_heading,
+      SELECT r.submission_id, s.submitted_at, r.system_category, r.asset_name, r.section_code, r.section_heading,
         r.asset_system, r.question_number, r.question_stressor, r.full_question_text,
         r.unit, r.selected_response
       FROM questionnaire_responses r
@@ -35,6 +35,8 @@ export async function GET(request: Request) {
     sheet.columns = [
       { header: "Submission ID", key: "submission_id", width: 38 },
       { header: "Timestamp", key: "submitted_at", width: 24 },
+      { header: "System", key: "system_category", width: 18 },
+      { header: "Asset", key: "asset_name", width: 25 },
       { header: "Section", key: "section_code", width: 12 },
       { header: "Section heading", key: "section_heading", width: 34 },
       { header: "Asset/System", key: "asset_system", width: 25 },
@@ -47,7 +49,7 @@ export async function GET(request: Request) {
     for (const row of rows) sheet.addRow({ ...row, submitted_at: new Date(row.submitted_at as string) });
     sheet.getRow(1).font = { bold: true, color: { argb: "FFFFFFFF" } };
     sheet.getRow(1).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF8B1E2D" } };
-    sheet.autoFilter = { from: "A1", to: "J1" };
+    sheet.autoFilter = { from: "A1", to: "L1" };
     sheet.eachRow((row, rowNumber) => {
       row.alignment = { vertical: "top", wrapText: rowNumber > 1 };
     });

@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS questionnaire_submissions (
 CREATE TABLE IF NOT EXISTS questionnaire_responses (
   id bigserial PRIMARY KEY,
   submission_id uuid NOT NULL REFERENCES questionnaire_submissions(id) ON DELETE CASCADE,
+  system_category text NOT NULL,
+  asset_name text NOT NULL,
   section_code text NOT NULL,
   section_heading text NOT NULL,
   asset_system text NOT NULL,

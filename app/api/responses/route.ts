@@ -27,6 +27,8 @@ export async function POST(request: Request) {
         return Response.json({ error: `The answer for question ${item.questionNumber} is incomplete or invalid.` }, { status: 400 });
       }
       rows.push({
+        system_category: context.system,
+        asset_name: context.asset,
         section_code: context.sectionCode,
         section_heading: context.sectionHeading,
         asset_system: context.assetSystem,
@@ -53,15 +55,15 @@ export async function POST(request: Request) {
         RETURNING id
       )
       INSERT INTO questionnaire_responses (
-        submission_id, section_code, section_heading, asset_system, question_number,
+        submission_id, system_category, asset_name, section_code, section_heading, asset_system, question_number,
         question_stressor, full_question_text, unit, selected_response
       )
-      SELECT new_submission.id, response.section_code, response.section_heading,
+      SELECT new_submission.id, response.system_category, response.asset_name, response.section_code, response.section_heading,
         response.asset_system, response.question_number, response.question_stressor,
         response.full_question_text, response.unit, response.selected_response
       FROM new_submission
       CROSS JOIN jsonb_to_recordset(${JSON.stringify(rows)}::jsonb) AS response(
-        section_code text, section_heading text, asset_system text, question_number text,
+        system_category text, asset_name text, section_code text, section_heading text, asset_system text, question_number text,
         question_stressor text, full_question_text text, unit text, selected_response text
       )
     `;

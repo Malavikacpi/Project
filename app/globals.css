@@ -99,6 +99,19 @@ select {
   max-width: 720px;
 }
 
+.hero-inner.header-only {
+  min-height: 162px;
+  align-items: center;
+}
+
+.hero-inner.header-only > div:first-child {
+  max-width: 760px;
+}
+
+.hero-inner.header-only h1 {
+  margin-top: 0;
+}
+
 .eyebrow {
   margin: 0;
   color: #ef5965;
@@ -154,6 +167,10 @@ select {
   min-height: 440px;
   margin: auto;
   padding: 48px 42px 82px;
+}
+
+.asset-selection-page {
+  min-height: 485px;
 }
 
 .front-heading,
@@ -308,6 +325,42 @@ select {
   border-right: 1px solid var(--line-strong);
 }
 
+.focused-sidebar {
+  padding-top: 18px;
+}
+
+.sidebar-back {
+  width: 100%;
+  margin: 0 0 17px;
+  padding: 0 0 14px;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--red);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.sidebar-back:hover {
+  color: var(--maroon);
+}
+
+.focused-sidebar .side-heading {
+  margin-bottom: 15px;
+}
+
+.focused-stressors {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.mobile-system-back {
+  display: none;
+}
+
 .side-heading {
   margin-bottom: 12px;
   padding-bottom: 17px;
@@ -433,6 +486,10 @@ select {
 
 .back-link:hover {
   color: var(--maroon);
+}
+
+.back-link.mobile-system-back {
+  display: none;
 }
 
 .asset-page,
@@ -658,6 +715,11 @@ select {
 .progressive-card {
   min-height: 265px;
   padding: 24px 28px;
+}
+
+.stress-question-card {
+  min-height: 0;
+  padding: 22px 25px;
 }
 
 .question-kicker,
@@ -914,6 +976,15 @@ textarea {
   margin-bottom: 18px;
 }
 
+.stress-section {
+  margin-bottom: 20px;
+}
+
+.stress-navigation {
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+
 .compact-intro {
   padding: 23px 26px;
 }
@@ -1142,6 +1213,16 @@ textarea {
     overflow-x: auto;
   }
 
+  .focused-sidebar .side-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .focused-sidebar .side-heading p {
+    margin: 0;
+  }
+
   .stressor-nav > p {
     display: none;
   }
@@ -1172,6 +1253,10 @@ textarea {
     min-height: 210px;
     padding: 28px 18px 25px;
     background-position: 62% center;
+  }
+
+  .hero-inner.header-only {
+    min-height: 150px;
   }
 
   .hero h1 {
@@ -1249,6 +1334,10 @@ textarea {
   }
 
   .question {
+    padding: 18px 15px;
+  }
+
+  .stress-question-card {
     padding: 18px 15px;
   }
 
