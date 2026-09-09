@@ -137,7 +137,7 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
   const selectAsset = (asset: GenerationAsset) => { setSelectedAsset(asset); setView("generation"); setPhase("questions"); window.scrollTo({ top: 0, behavior: "smooth" }); };
   const selectStressor = (sectionIndex: number) => { if (!activeScope || !activeQuestionnaire) return; const index = activeQuestionnaire.sections.slice(0, sectionIndex).reduce((sum, section) => sum + section.questions.length, 0); setQuestionIndexes((current) => ({ ...current, [activeScope]: index })); setPhase("questions"); window.scrollTo({ top: 0, behavior: "smooth" }); };
   const allQuestionnaires: Array<[QuestionnaireScope, Questionnaire]> = [["solar", questionnaires.generation.solar], ["wind", questionnaires.generation.wind], ["thermal", questionnaires.generation.thermal], ["transmission", questionnaires.transmission], ["distribution", questionnaires.distribution]];
-  const responses: SubmissionResponse[] = allQuestionnaires.flatMap(([scope, questionnaire]) => questionnaire.sections.flatMap((section) => section.questions.flatMap((question) => { const response = buildResponse(question, answers, scope); return response ? [{ scope, questionNumber: question.number, response }] : []; })));
+  const responses: SubmissionResponse[] = allQuestionnaires.flatMap(([scope, questionnaire]) => questionnaire.sections.flatMap((section) => section.questions.flatMap((question) => { const response = buildResponse(question, answers, scope); return response ? [{ scope, questionNumber: question.number, questionText: question.text, response }] : []; })));
 
   const submit = async () => {
     if (!responses.length) { setSubmitError("Complete at least one questionnaire section before submitting."); return; }

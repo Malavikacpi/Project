@@ -11,7 +11,7 @@ export type MeasuresResponse = {
   rows: Array<{ id: string; measure?: string; minimum?: string; maximum?: string; outcome?: string }>;
 };
 export type StructuredResponse = ChoiceResponse | MatrixResponse | MeasuresResponse;
-export type SubmissionResponse = { scope: QuestionnaireScope; questionNumber: string; response: StructuredResponse };
+export type SubmissionResponse = { scope: QuestionnaireScope; questionNumber: string; questionText: string; response: StructuredResponse };
 
 export type ScopeMetadata = {
   questionnaire: Questionnaire;
@@ -34,10 +34,10 @@ export function getScopeMetadata(scope: QuestionnaireScope): ScopeMetadata {
   return { questionnaire: questionnaires.distribution, sectionCode: "C", sectionHeading: "Section C: Distribution System", assetSystem: "Distribution System" };
 }
 
-export function findQuestion(scope: QuestionnaireScope, questionNumber: string) {
+export function findQuestion(scope: QuestionnaireScope, questionNumber: string, questionText: string) {
   const metadata = getScopeMetadata(scope);
   for (const section of metadata.questionnaire.sections) {
-    const question = section.questions.find((candidate) => candidate.number === questionNumber);
+    const question = section.questions.find((candidate) => candidate.number === questionNumber && candidate.text === questionText);
     if (question) return { ...metadata, stressor: section.title, question };
   }
   return null;

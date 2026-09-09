@@ -15,14 +15,14 @@ export async function POST(request: Request) {
     const seen = new Set<string>();
     const rows = [];
     for (const item of body.responses) {
-      if (!item || !isQuestionnaireScope(item.scope) || typeof item.questionNumber !== "string") {
+      if (!item || !isQuestionnaireScope(item.scope) || typeof item.questionNumber !== "string" || typeof item.questionText !== "string") {
         return Response.json({ error: "The response payload contains an unknown questionnaire item." }, { status: 400 });
       }
-      const identity = `${item.scope}:${item.questionNumber}`;
+      const identity = `${item.scope}:${item.questionNumber}:${item.questionText}`;
       if (seen.has(identity)) return Response.json({ error: "The response payload contains a duplicate questionnaire item." }, { status: 400 });
       seen.add(identity);
 
-      const context = findQuestion(item.scope, item.questionNumber);
+      const context = findQuestion(item.scope, item.questionNumber, item.questionText);
       if (!context || !validateStructuredResponse(context.question, item.response)) {
         return Response.json({ error: `The answer for question ${item.questionNumber} is incomplete or invalid.` }, { status: 400 });
       }
