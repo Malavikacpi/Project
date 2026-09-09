@@ -1,22 +1,23 @@
 # Climate Risk & Resilience Questionnaire
 
-A production-ready Next.js questionnaire transcribed from `CR-DistributionSystem_Questionnaire.docx`. The form is rendered dynamically from structured JSON, supports responsive table inputs, optional respondent details, and local CSV export.
+This Next.js application renders the attached Solar, Wind, Thermal, Transmission, and Distribution questionnaires from `data/questionnaires.json`. Respondent progress is kept in browser-session storage, while completed submissions are stored in Neon Postgres through a server-only API.
 
-## Run locally
+## Vercel configuration
 
-```bash
-npm install
-npm run dev
+1. Create or connect a Neon Postgres database in the Vercel project.
+2. Add `DATABASE_URL` in Vercel Project Settings → Environment Variables.
+3. Add a long random `ADMIN_EXPORT_TOKEN` in the same settings.
+4. Redeploy after adding the environment variables.
+
+The schema is created idempotently when the submission/export API first runs. The equivalent SQL is available in `db/schema.sql` for controlled migrations.
+
+## Private Excel export
+
+The respondent interface has no export control. An authorized administrator can download the workbook from:
+
+```text
+GET /api/admin/responses.xlsx
+Authorization: Bearer <ADMIN_EXPORT_TOKEN>
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
-
-## Data and architecture
-
-- `data/questionnaire.json` is the source of truth for all seven climate-stressor sections, original question numbering, response options, units, and resilience-measure table rows.
-- `components/QuestionnaireForm.tsx` dynamically renders choice, matrix, and measures question types.
-- `lib/csv.ts` converts all entered responses into a UTF-8 CSV file entirely in the browser; responses are never sent to a server.
-
-## Deploy to Vercel
-
-Import this repository in Vercel and accept the detected **Next.js** framework settings, or run `npx vercel`. No environment variables or external services are required. The production build command is `npm run build`.
+The workbook contains one row per question response, including submission ID, timestamp, section metadata, asset/system, original question number and wording, unit, and the selected response.
