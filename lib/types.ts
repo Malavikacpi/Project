@@ -28,8 +28,26 @@ export type MeasuresQuestion = {
 
 export type Question = ChoiceQuestion | MatrixQuestion | MeasuresQuestion;
 export type Questionnaire = {
+  sourceDocument: string;
   title: string;
   sectionLabel: string;
   introduction: string;
+  note: string;
   sections: { number: string; title: string; questions: Question[] }[];
+  commentsLabel: string;
+  respondentTitle: string;
+  respondentInstruction: string;
+  respondentFields: string[];
 };
+
+export type QuestionnaireCollection = {
+  title: string;
+  generation: {
+    solar: Questionnaire;
+    wind: Questionnaire;
+    thermal: Questionnaire;
+  };
+  transmission: Questionnaire;
+  distribution: Questionnaire;
+};
+
