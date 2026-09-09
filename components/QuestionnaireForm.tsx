@@ -62,6 +62,15 @@ function MeasuresField({ question, answers, setAnswer }: FieldProps) {
     </tr>})}</tbody></table></div>;
 }
 
+function QuestionCard({ question, answers, setAnswer }: FieldProps) {
+  return <article className="question">
+    <div className="question-head"><span>{question.number}</span><div><h3>{question.text}</h3>{question.type === "choice" && <p className="unit-label">Unit <strong>{question.unit}</strong></p>}</div></div>
+    {question.type === "choice" && <ChoiceField question={question} answers={answers} setAnswer={setAnswer} />}
+    {question.type === "matrix" && <MatrixField question={question} answers={answers} setAnswer={setAnswer} />}
+    {question.type === "measures" && <MeasuresField question={question} answers={answers} setAnswer={setAnswer} />}
+  </article>;
+}
+
 type View = "home" | "generation" | "transmission" | "distribution";
 type GenerationAsset = "solar" | "wind" | "thermal";
 
@@ -143,9 +152,7 @@ export default function QuestionnaireForm({ questionnaire }: { questionnaire: Qu
           </section>
           <div className="toolbar"><div><span className="status-dot" /> Responses are saved in this browser session</div></div>
           {questionnaire.sections.map((section, index) => <section className="section" id={`section-${section.number}`} key={section.number} onMouseEnter={() => setActiveSection(index)}><div className="section-title"><span>{section.number.padStart(2, "0")}</span><div><p>Climate stressor</p><h2>{section.number}. {section.title}</h2></div></div>
-            {section.questions.map((question, qIndex) => <article className="question" key={`${question.number}-${qIndex}`}><div className="question-head"><span>{question.number}</span><div><h3>{question.text}</h3>{question.type === "choice" && <p className="unit-label">Unit <strong>{question.unit}</strong></p>}</div></div>
-              {question.type === "choice" && <ChoiceField question={question} answers={answers} setAnswer={setAnswer} />}{question.type === "matrix" && <MatrixField question={question} answers={answers} setAnswer={setAnswer} />}{question.type === "measures" && <MeasuresField question={question} answers={answers} setAnswer={setAnswer} />}
-            </article>)}
+            <div className="question-list">{section.questions.map((question, qIndex) => <QuestionCard question={question} answers={answers} setAnswer={setAnswer} key={`${question.number}-${qIndex}`} />)}</div>
             <div className="question-navigation"><button disabled={index === 0} onClick={() => openDistributionSection(index - 1)}>← Previous</button><button className="primary-action" onClick={() => index === questionnaire.sections.length - 1 ? document.getElementById("final-details")?.scrollIntoView({ behavior: "smooth" }) : openDistributionSection(index + 1)}>Next →</button></div>
           </section>)}
           <section className="section final" id="final-details"><div className="section-title"><span>08</span><div><p>Final details</p><h2>Comments &amp; respondent details</h2></div></div><article className="question"><label className="block-label" htmlFor="comments">Any other comments (Optional):</label><textarea id="comments" rows={6} value={answers.comments ?? ""} onChange={(e) => setAnswer("comments", e.target.value)} placeholder="Share any additional context or observations…" /></article><article className="question"><h3>Respondent Details (Optional)</h3><p className="hint">Please provide your name, organization, designation, and contact information before answering the questionnaire.</p><div className="details-grid">{["Name","Organization","Contact","Date"].map((label) => <label key={label}>{label}<input type={label === "Date" ? "date" : "text"} value={answers[`respondent_${label.toLowerCase()}`] ?? ""} onChange={(e) => setAnswer(`respondent_${label.toLowerCase()}`, e.target.value)} /></label>)}</div></article>
