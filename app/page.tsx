@@ -1,7 +1,8 @@
 import QuestionnaireForm from "@/components/QuestionnaireForm";
-import questionnaire from "@/data/questionnaire.json";
-import type { Questionnaire } from "@/lib/types";
+import questionnaires from "@/data/questionnaires.json";
+import type { QuestionnaireCollection } from "@/lib/types";
 
 export default function Home() {
-  return <QuestionnaireForm questionnaire={questionnaire as Questionnaire} />;
+  return <QuestionnaireForm questionnaires={questionnaires as QuestionnaireCollection} />;
 }
+
