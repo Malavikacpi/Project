@@ -67,9 +67,10 @@ export default function QuestionnaireForm({ questionnaire }: { questionnaire: Qu
   const [activeSection, setActiveSection] = useState(0);
   const setAnswer = (name: string, value: string) => setAnswers((current) => ({ ...current, [name]: value }));
   const answered = useMemo(() => Object.values(answers).filter(Boolean).length, [answers]);
+  const [titleLead, titleTail = ""] = questionnaire.title.split("Power Sector");
 
   return <main>
-    <header className="hero"><div className="hero-inner"><div><p className="eyebrow">Government &amp; infrastructure research</p><h1>{questionnaire.title}</h1><p>{questionnaire.introduction}</p></div><div className="hero-mark" aria-hidden="true"><span>CR</span><small>India power sector</small></div></div></header>
+    <header className="hero"><div className="hero-inner"><div><p className="eyebrow">Government &amp; infrastructure research</p><h1>{titleLead}<span className="title-accent">Power Sector</span>{titleTail}</h1><p>{questionnaire.introduction}</p></div><div className="hero-mark" aria-hidden="true"><span>CR</span><small>India power sector</small></div></div></header>
     <div className="shell">
       <aside><div className="side-heading"><p>Questionnaire</p><strong>{questionnaire.sectionLabel}</strong></div><nav aria-label="Questionnaire sections">{questionnaire.sections.map((section, index) => <button className={index === activeSection ? "active" : ""} onClick={() => { setActiveSection(index); document.getElementById(`section-${section.number}`)?.scrollIntoView({ behavior: "smooth" }); }} key={section.number}><span>{section.number.padStart(2, "0")}</span>{section.title}</button>)}</nav></aside>
       <section className="content"><div className="toolbar"><div><span className="status-dot" /> Responses are saved in this browser session</div></div>
@@ -83,3 +84,4 @@ export default function QuestionnaireForm({ questionnaire }: { questionnaire: Qu
     </div>
   </main>;
 }
+
