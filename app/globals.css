@@ -609,13 +609,35 @@ select {
   line-height: 1.2;
 }
 
+.question-list {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
 .question {
-  margin: 0 0 13px;
-  padding: 23px 27px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
+  position: relative;
+  isolation: isolate;
+  margin: 0 0 14px;
+  padding: 21px 24px;
+  overflow: hidden;
+  border: 1px solid #dedbd8;
+  border-radius: 7px;
   background: var(--white);
-  box-shadow: var(--shadow);
+  box-shadow: 0 3px 12px rgba(40, 31, 28, .05);
+}
+
+.question-list .question {
+  margin: 0;
+}
+
+.question::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: #d9a2a7;
+  opacity: .7;
 }
 
 .question-head {
@@ -1029,7 +1051,7 @@ textarea {
   }
 
   .question {
-    padding: 19px 15px;
+    padding: 18px 15px;
   }
 
   .question-head {
