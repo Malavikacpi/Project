@@ -13,43 +13,11 @@ const STORAGE_KEY = "climate-questionnaire-progress-v4";
 const GENERAL_INTRODUCTION = "Please answer the following questions based on your observations and experience in the power sector. Your responses will help assess how climate-related stresses affect the power sector and identify appropriate measures to strengthen its resilience.";
 const key = (...parts: string[]) => parts.join("__");
 
-const generationAssets: Array<{ id: GenerationAsset; title: string; description: string }> = [
-  { id: "solar", title: "Solar Power Plant", description: "Solar photovoltaic generation assets" },
-  { id: "wind", title: "Wind Power Plant", description: "Onshore and offshore wind generation assets" },
-  { id: "thermal", title: "Thermal Power Plant", description: "Conventional thermal generation assets" },
+const generationAssets: Array<{ id: GenerationAsset; title: string }> = [
+  { id: "solar", title: "Solar Power Plant" },
+  { id: "wind", title: "Wind Power Plant" },
+  { id: "thermal", title: "Thermal Power Plant" },
 ];
-
-type IllustrationKind = "generation" | "transmission" | "distribution" | GenerationAsset;
-
-function AssetIllustration({ kind }: { kind: IllustrationKind }) {
-  if (kind === "generation") return <svg className="asset-illustration" viewBox="0 0 300 128" aria-hidden="true">
-    <circle className="sun" cx="45" cy="32" r="17" /><g className="sun-rays"><path d="M45 5v10M45 49v10M18 32h10M62 32h10M26 13l7 7M57 44l7 7M26 51l7-7M57 20l7-7" /></g>
-    <path className="ground" d="M15 108h270" /><path className="panel" d="m20 64 63-7 9 38-74 4Z" /><path className="detail" d="m37 62-5 35M57 60l-5 35M77 58l-5 35M22 77l65-6M19 89l71-7M54 98l-4 10M74 96l5 12" />
-    <path className="tower-fill" d="M218 101c13-20 14-36 6-59h27c-8 23-7 39 6 59Z" /><path className="smoke" d="M229 38c-2-13 9-17 18-13 4-13 22-15 27-3 18-3 20 18 4 22h-48" />
-    <path className="turbine" d="M142 107V50M142 50l-4-33M142 50l31 12M142 50l-24 21" /><circle className="hub" cx="142" cy="50" r="5" />
-  </svg>;
-  if (kind === "transmission") return <svg className="asset-illustration" viewBox="0 0 300 128" aria-hidden="true">
-    <path className="hills" d="M7 108c28-29 54-22 77-4 30-32 62-34 92 0 30-25 66-20 116 4Z" /><g className="grid-lines"><path d="M20 35c44 26 85 27 127 5 43-22 84-19 134 11M18 50c46 25 88 25 129 4 43-22 85-17 136 11" /></g>
-    <g className="pylon"><path d="M90 108 117 16l27 92M102 69h30M96 87h42M109 43h17M107 43l-18 12M128 43l18 12M113 28h9M117 16v92M103 108h39" /></g>
-    <g className="pylon small"><path d="M205 108 220 54l16 54M212 81h17M208 95h24M215 68h10M214 68l-11 8M226 68l11 8M220 54v54M211 108h27" /></g>
-  </svg>;
-  if (kind === "distribution") return <svg className="asset-illustration" viewBox="0 0 300 128" aria-hidden="true">
-    <path className="city" d="M125 106V82h19V66h22v40m8 0V76h24v30m9 0V87h17v19" /><path className="ground" d="M12 108h276" />
-    <g className="distribution-lines"><path d="M42 36v72M27 47h30M39 47c36 28 72 27 110 1M147 40v68M132 51h30M149 51c35 25 67 23 103 2M251 58v50M237 68h28" /></g>
-    <path className="house" d="m76 82 20-15 21 15v26H76Z" /><path className="roof" d="m71 84 25-20 26 20M87 108V91h18v17" />
-    <circle className="tree" cx="264" cy="88" r="16" /><path className="tree-trunk" d="M264 95v13" />
-  </svg>;
-  if (kind === "solar") return <svg className="asset-illustration" viewBox="0 0 300 128" aria-hidden="true">
-    <circle className="sun" cx="245" cy="27" r="18" /><g className="sun-rays"><path d="M245 2v10M245 42v10M220 27h10M260 27h10M227 9l7 7M256 38l7 7M227 45l7-7M256 16l7-7" /></g><path className="ground" d="M12 108h276" />
-    <path className="panel" d="m29 47 80-8 12 47-95 7ZM143 55l80-8 12 43-94 7Z" /><path className="detail" d="M49 45 43 91M72 43l-6 46M95 41l-6 46M31 62l84-8M28 78l91-9M162 53l-6 42M185 51l-6 42M208 49l-6 42M146 69l83-8M143 84l89-8M70 91l-5 17M174 94l-5 14" />
-  </svg>;
-  if (kind === "wind") return <svg className="asset-illustration" viewBox="0 0 300 128" aria-hidden="true">
-    <path className="hills" d="M8 108c42-34 82-30 116-2 43-39 92-37 168 2Z" /><g className="turbine"><path d="M91 108V47M91 47l-5-38M91 47l36 14M91 47 62 84M201 108V58M201 58l-4-30M201 58l29 11M201 58l-22 20" /></g><circle className="hub" cx="91" cy="47" r="6" /><circle className="hub" cx="201" cy="58" r="5" />
-  </svg>;
-  return <svg className="asset-illustration" viewBox="0 0 300 128" aria-hidden="true">
-    <path className="ground" d="M12 108h276" /><path className="factory" d="M25 108V71l48-21v58m0 0V78l45-18v48M44 108V88h13v20M91 108V89h13v19" /><path className="tower-fill" d="M150 105c15-22 17-45 7-78h34c-10 33-8 56 7 78ZM211 105c12-18 13-37 6-64h29c-8 27-6 46 6 64Z" /><path className="smoke" d="M165 21c-4-15 8-22 20-17 6-12 24-10 25 5 19-2 22 19 5 24h-47M224 36c1-12 12-16 21-10 7-9 22-4 21 9" />
-  </svg>;
-}
 
 type FieldProps = {
   question: Question;
@@ -311,14 +279,14 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
     {view === "final" || view === "submitted" ? finalContent : view === "home" ? <section className="front-page">
       <div className="front-heading"><p>Questionnaire</p><h2>Select Power System Asset</h2><span>Please select the relevant power system asset to continue with the questionnaire.</span></div>
       <div className="section-card-grid">
-        <button className="section-card generation-card" onClick={() => openView("generation")}><AssetIllustration kind="generation" /><div className="card-copy"><strong>Generation</strong><p>Solar, Wind and Thermal power generation assets</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
-        <button className="section-card transmission-card" onClick={() => openView("transmission")}><AssetIllustration kind="transmission" /><div className="card-copy"><strong>Transmission</strong><p>High-voltage transmission system assets</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
-        <button className="section-card distribution-card" onClick={() => openView("distribution")}><AssetIllustration kind="distribution" /><div className="card-copy"><strong>Distribution</strong><p>Distribution system assets and networks</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
+        <button className="section-card" onClick={() => openView("generation")}><div><small>Power system asset</small><strong>Generation</strong><p>Solar, Wind and Thermal power generation assets</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
+        <button className="section-card" onClick={() => openView("transmission")}><div><small>Power system asset</small><strong>Transmission</strong><p>High-voltage transmission system assets</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
+        <button className="section-card" onClick={() => openView("distribution")}><div><small>Power system asset</small><strong>Distribution</strong><p>Distribution system assets and networks</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
       </div>
     </section> : view === "generation" && !selectedAsset ? <section className="front-page asset-selection-page">
       <button className="back-link" onClick={() => openView("home")}><span>←</span> Back to Power System selection</button>
       <div className="front-heading"><p>Generation</p><h2>Select Generation Asset</h2><span>Select one generation asset to open its climate-risk questionnaire.</span></div>
-      <div className="asset-card-grid">{generationAssets.map((asset) => <button className={`asset-card ${asset.id}-card`} onClick={() => selectAsset(asset.id)} key={asset.id}><AssetIllustration kind={asset.id} /><div className="card-copy"><strong>{asset.title}</strong><small>{asset.description}</small></div><span className="selection-mark" aria-hidden="true">→</span></button>)}</div>
+      <div className="asset-card-grid">{generationAssets.map((asset) => <button className="asset-card" onClick={() => selectAsset(asset.id)} key={asset.id}><strong>{asset.title}</strong><span className="selection-mark" aria-hidden="true">→</span></button>)}</div>
     </section> : <div className="workspace">{renderActiveSidebar()}<section className="content"><button className="back-link mobile-system-back" onClick={() => openView("home")}><span>←</span> Back to Power System selection</button>{activeQuestionnaire && activeScope && <QuestionnaireBody questionnaire={activeQuestionnaire} sectionCode={activeSectionCode} displayTitle={activeTitle} scope={activeScope} answers={answers} setAnswer={setAnswer} stressIndex={currentStressIndex} setStressIndex={(index) => setStressIndexes((current) => ({ ...current, [activeScope]: index }))} phase={phase} setPhase={setPhase} onMoveSections={() => openView("home")} onFinish={() => { setView("final"); window.scrollTo({ top: 0, behavior: "smooth" }); }} />}</section></div>}
   </div></main>;
 }
