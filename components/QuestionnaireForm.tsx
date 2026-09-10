@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import type { MatrixQuestion, MeasuresQuestion, Question, Questionnaire, QuestionnaireCollection } from "@/lib/types";
 import type { QuestionnaireScope, StructuredResponse, SubmissionResponse } from "@/lib/submissions";
 
@@ -58,15 +58,39 @@ function MatrixField({ question, answers, setAnswer, scope }: FieldProps) {
 function MeasuresField({ question, answers, setAnswer, scope }: FieldProps) {
   if (question.type !== "measures") return null;
   const q = question as MeasuresQuestion;
-  return <div className="table-wrap"><table className="measures"><thead><tr><th>S.No.</th><th>Measure</th><th>Cost Range</th><th>Unit</th><th>{q.outcomeLabel}</th></tr></thead><tbody>{q.rows.map((row) => {
+  const standardRows = q.rows.filter((row) => !row.custom);
+  const customRows = q.rows.filter((row) => row.custom);
+  const isCustomVisible = (index: number) => index === 0 || customRows.slice(0, index).every((row) => answers[key(scope, q.number, row.id, "more")] === "yes");
+
+  const costCells = (row: MeasuresQuestion["rows"][number], base: string) => {
+    const measureLabel = row.custom ? "Other suitable measure" : row.measure;
+    return <>
+    <td><div className="cost"><input type="number" min="0" aria-label={`${measureLabel} minimum cost`} placeholder="Minimum" value={answers[key(base, "minimum")] ?? ""} onChange={(event) => setAnswer(key(base, "minimum"), event.target.value)} /><input type="number" min="0" aria-label={`${measureLabel} maximum cost`} placeholder="Maximum" value={answers[key(base, "maximum")] ?? ""} onChange={(event) => setAnswer(key(base, "maximum"), event.target.value)} /></div></td>
+    <td className="unit">{q.unit}</td>
+    <td><div className="percent"><input type="number" min="0" max="100" aria-label={`${measureLabel} ${q.outcomeLabel}`} placeholder="0" value={answers[key(base, "outcome")] ?? ""} onChange={(event) => setAnswer(key(base, "outcome"), event.target.value)} /><span>%</span></div></td>
+  </>;
+  };
+
+  return <div className="table-wrap"><table className="measures"><thead><tr><th>S.No.</th><th>Measure</th><th>Cost Range</th><th>Unit</th><th>{q.outcomeLabel}</th></tr></thead><tbody>{standardRows.map((row) => {
     const base = key(scope, q.number, row.id);
     return <tr key={row.id}>
       <td>{row.serial}</td>
-      <th scope="row">{row.custom ? <input aria-label={`${q.number} ${row.measure}`} placeholder={row.measure} value={answers[key(base, "measure")] ?? ""} onChange={(event) => setAnswer(key(base, "measure"), event.target.value)} /> : row.measure}</th>
-      <td><div className="cost"><input type="number" min="0" aria-label={`${row.measure} minimum cost`} placeholder="Minimum" value={answers[key(base, "minimum")] ?? ""} onChange={(event) => setAnswer(key(base, "minimum"), event.target.value)} /><input type="number" min="0" aria-label={`${row.measure} maximum cost`} placeholder="Maximum" value={answers[key(base, "maximum")] ?? ""} onChange={(event) => setAnswer(key(base, "maximum"), event.target.value)} /></div></td>
-      <td className="unit">{q.unit}</td>
-      <td><div className="percent"><input type="number" min="0" max="100" aria-label={`${row.measure} ${q.outcomeLabel}`} placeholder="0" value={answers[key(base, "outcome")] ?? ""} onChange={(event) => setAnswer(key(base, "outcome"), event.target.value)} /><span>%</span></div></td>
+      <th scope="row">{row.measure}</th>
+      {costCells(row, base)}
     </tr>;
+  })}{customRows.map((row, index) => {
+    if (!isCustomVisible(index)) return null;
+    const base = key(scope, q.number, row.id);
+    const measure = answers[key(base, "measure")] ?? "";
+    const promptKey = key(scope, q.number, row.id, "more");
+    return <Fragment key={row.id}>
+      <tr className="custom-measure-row">
+        <td>{row.serial}</td>
+        <th scope="row" colSpan={measure.trim() ? 1 : 4}><label className="custom-measure-label"><span>Other suitable measure</span><input aria-label={`${q.number} Other suitable measure ${index + 1}`} placeholder="Enter a measure" value={measure} onChange={(event) => setAnswer(key(base, "measure"), event.target.value)} /></label></th>
+        {measure.trim() && costCells(row, base)}
+      </tr>
+      {measure.trim() && index < customRows.length - 1 && <tr className="custom-measure-prompt-row"><td /><td colSpan={4}><div className="custom-measure-prompt"><span>Are there any other suitable measures?</span><div><button type="button" className={answers[promptKey] === "yes" ? "selected" : ""} aria-pressed={answers[promptKey] === "yes"} onClick={() => setAnswer(promptKey, "yes")}>Yes</button><button type="button" className={answers[promptKey] === "no" ? "selected" : ""} aria-pressed={answers[promptKey] === "no"} onClick={() => setAnswer(promptKey, "no")}>No</button></div></div></td></tr>}
+    </Fragment>;
   })}</tbody></table></div>;
 }
 
@@ -87,11 +111,13 @@ function buildResponse(question: Question, answers: Answers, scope: Questionnair
     return rows.some((row) => !row.selection || (row.selection.startsWith("Other") && !row.other)) ? null : { kind: "matrix", rows };
   }
 
+  const customRows = question.rows.filter((row) => row.custom);
+  const visibleCustomIds = new Set(customRows.filter((_, index) => index === 0 || customRows.slice(0, index).every((row) => answers[key(scope, question.number, row.id, "more")] === "yes")).map((row) => row.id));
   const rows = question.rows.map((row) => {
     const base = key(scope, question.number, row.id);
-    return { id: row.id, measure: answers[key(base, "measure")]?.trim(), minimum: answers[key(base, "minimum")]?.trim(), maximum: answers[key(base, "maximum")]?.trim(), outcome: answers[key(base, "outcome")]?.trim() };
+    return { id: row.id, custom: row.custom, measure: answers[key(base, "measure")]?.trim(), minimum: answers[key(base, "minimum")]?.trim(), maximum: answers[key(base, "maximum")]?.trim(), outcome: answers[key(base, "outcome")]?.trim() };
   });
-  const providedRows = rows.filter((answer) => [answer.measure, answer.minimum, answer.maximum, answer.outcome].some(Boolean));
+  const providedRows = rows.filter((answer) => answer.custom ? visibleCustomIds.has(answer.id) && Boolean(answer.measure) : [answer.minimum, answer.maximum, answer.outcome].some(Boolean)).map(({ custom: _custom, ...answer }) => answer);
   return providedRows.length ? { kind: "measures", rows: providedRows } : null;
 }
 
