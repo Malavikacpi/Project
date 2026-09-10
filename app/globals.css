@@ -40,7 +40,7 @@ body {
 }
 
 .app-frame {
-  width: min(1720px, 100%);
+  width: min(1440px, 100%);
   margin: 0 auto;
   overflow: hidden;
   border: 1px solid #ddd5d1;
@@ -164,10 +164,10 @@ select {
 }
 
 .front-page {
-  max-width: 1260px;
+  max-width: 1320px;
   min-height: 440px;
   margin: auto;
-  padding: 48px 42px 82px;
+  padding: 52px 48px 70px;
 }
 
 .asset-selection-page {
@@ -223,20 +223,20 @@ select {
 .section-card-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: 24px;
 }
 
 .section-card {
   position: relative;
-  min-height: 190px;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 16px;
-  padding: 24px;
+  min-height: 285px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  padding: 22px 26px 24px;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 9px;
-  background: var(--white);
+  border-radius: 11px;
+  background: linear-gradient(145deg, #fff, #fdf7f5);
   color: var(--ink);
   cursor: pointer;
   text-align: left;
@@ -261,52 +261,128 @@ select {
   transform: translateY(-2px);
 }
 
+.section-card:focus-visible,
+.asset-card:focus-visible {
+  outline: 3px solid rgba(189, 38, 51, .24);
+  outline-offset: 3px;
+  border-color: var(--red);
+}
+
+.section-card:active,
+.asset-card:active {
+  border-color: var(--red);
+  background: #fff1f0;
+}
+
+.section-card.transmission-card {
+  background: linear-gradient(145deg, #fff, #f2f8fc);
+}
+
+.section-card.distribution-card {
+  background: linear-gradient(145deg, #fff, #f3f8f3);
+}
+
 .section-card:hover::before {
   transform: scaleY(1);
-}
-
-.section-letter {
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border: 1px solid #e3a9ae;
-  border-radius: 50%;
-  color: var(--red);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 17px;
-  font-weight: 700;
-}
-
-.section-card small {
-  display: block;
-  margin: 2px 0 7px;
-  color: var(--red);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.3px;
-  text-transform: uppercase;
 }
 
 .section-card strong {
   display: block;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 20px;
+  font-size: 23px;
   line-height: 1.25;
 }
 
 .section-card p {
-  margin: 9px 0 0;
+  max-width: 250px;
+  margin: 4px 45px 0 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
+  line-height: 1.45;
 }
 
 .card-arrow {
   position: absolute;
-  right: 20px;
-  bottom: 17px;
+  right: 25px;
+  bottom: 24px;
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #f7dddd;
   color: var(--red);
-  font-size: 21px;
+  font-size: 23px;
+}
+
+.asset-illustration {
+  width: 100%;
+  height: 142px;
+  display: block;
+  color: #29485b;
+}
+
+.asset-illustration path,
+.asset-illustration circle {
+  vector-effect: non-scaling-stroke;
+}
+
+.asset-illustration .ground,
+.asset-illustration .detail,
+.asset-illustration .grid-lines,
+.asset-illustration .pylon,
+.asset-illustration .turbine,
+.asset-illustration .distribution-lines,
+.asset-illustration .roof,
+.asset-illustration .tree-trunk {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.asset-illustration .panel {
+  fill: #8fb5c9;
+  stroke: #29485b;
+  stroke-width: 2;
+}
+
+.asset-illustration .sun {
+  fill: #f3a93f;
+}
+
+.asset-illustration .sun-rays {
+  fill: none;
+  stroke: #f3a93f;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.asset-illustration .tower-fill,
+.asset-illustration .factory,
+.asset-illustration .house {
+  fill: #78909a;
+  stroke: #29485b;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.asset-illustration .smoke {
+  fill: #dedede;
+}
+
+.asset-illustration .hub {
+  fill: #45697b;
+}
+
+.asset-illustration .hills,
+.asset-illustration .city {
+  fill: #dce9ef;
+}
+
+.asset-illustration .tree {
+  fill: #6f9a70;
 }
 
 .workspace {
@@ -520,16 +596,17 @@ select {
 }
 
 .asset-card {
-  min-height: 145px;
+  position: relative;
+  min-height: 285px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 14px;
-  padding: 20px;
+  gap: 12px;
+  padding: 22px 24px 24px;
   border: 1px solid var(--line-strong);
-  border-radius: 8px;
-  background: #fffdfc;
+  border-radius: 11px;
+  background: linear-gradient(145deg, #fff, #fdf7f5);
   color: var(--ink);
   cursor: pointer;
   text-align: left;
@@ -560,19 +637,30 @@ select {
 .asset-card strong {
   display: block;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 17px;
+  font-size: 21px;
 }
 
 .asset-card small {
   display: block;
-  margin-top: 4px;
+  max-width: 250px;
+  margin-top: 5px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
+  line-height: 1.45;
 }
 
 .selection-mark {
-  align-self: flex-end;
+  position: absolute;
+  right: 24px;
+  bottom: 23px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #f7dddd;
   color: var(--red);
+  font-size: 22px;
   font-weight: 700;
 }
 
@@ -1004,7 +1092,7 @@ textarea {
 }
 
 .compact-intro .page-heading {
-  margin-bottom: 16px;
+  margin-bottom: 0;
 }
 
 .compact-intro .instruction-box {
@@ -1194,7 +1282,12 @@ textarea {
   }
 
   .section-card {
-    min-height: 135px;
+    min-height: 250px;
+  }
+
+  .asset-card-grid,
+  .section-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .workspace {
@@ -1288,6 +1381,20 @@ textarea {
 
   .front-page {
     padding: 34px 16px 60px;
+  }
+
+  .asset-card-grid,
+  .section-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-card,
+  .asset-card {
+    min-height: 245px;
+  }
+
+  .asset-illustration {
+    height: 125px;
   }
 
   .front-heading h2,
