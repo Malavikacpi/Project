@@ -921,6 +921,21 @@ textarea:focus {
   white-space: nowrap;
 }
 
+.custom-cost {
+  min-width: 120px;
+}
+
+.custom-cost input {
+  min-width: 85px;
+}
+
+.custom-cost small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 8.5px;
+}
+
 .percent {
   display: flex;
   align-items: center;
@@ -964,36 +979,41 @@ textarea:focus {
 }
 
 .custom-measure-prompt {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
   color: var(--ink-soft);
   font-size: 10.5px;
 }
 
-.custom-measure-prompt > div {
-  display: flex;
-  gap: 5px;
+.custom-measure-prompt legend {
+  margin: 0 0 7px;
+  padding: 0;
+  font-weight: 600;
 }
 
-.custom-measure-prompt button {
-  min-width: 48px;
-  padding: 5px 10px;
-  border: 1px solid var(--line-strong);
-  border-radius: 2px;
-  background: #fff;
+.custom-measure-prompt > div {
+  display: flex;
+  gap: 14px;
+}
+
+.custom-measure-prompt label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   color: var(--ink-soft);
   cursor: pointer;
   font-size: 10px;
   font-weight: 700;
 }
 
-.custom-measure-prompt button:hover,
-.custom-measure-prompt button.selected {
-  border-color: var(--red);
-  background: var(--red-soft);
-  color: var(--red);
+.custom-measure-prompt input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--red);
 }
 
 .block-label {

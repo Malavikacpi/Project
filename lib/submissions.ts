@@ -8,7 +8,7 @@ export type ChoiceResponse = { kind: "choice"; selection: string; other?: string
 export type MatrixResponse = { kind: "matrix"; rows: Array<{ id: string; selection: string; other?: string }> };
 export type MeasuresResponse = {
   kind: "measures";
-  rows: Array<{ id: string; measure?: string; minimum?: string; maximum?: string; outcome?: string }>;
+  rows: Array<{ id: string; measure?: string; minimum?: string; maximum?: string; cost?: string; outcome?: string }>;
 };
 export type StructuredResponse = ChoiceResponse | MatrixResponse | MeasuresResponse;
 export type SubmissionResponse = { scope: QuestionnaireScope; questionNumber: string; questionText: string; response: StructuredResponse };
@@ -76,17 +76,19 @@ export function validateStructuredResponse(question: Question, response: unknown
   if (response.kind !== "measures" || !Array.isArray(response.rows)) return false;
   const responseRows = response.rows;
   const knownIds = new Set(question.rows.map((row) => row.id));
-  if (!responseRows.length || responseRows.length > question.rows.length) return false;
+  const hasCustomRows = question.rows.some((row) => row.custom);
+  if (!responseRows.length || responseRows.length > 100) return false;
   const seenIds = new Set<string>();
   return responseRows.every((row) => {
-    if (!isRecord(row) || typeof row.id !== "string" || !knownIds.has(row.id) || seenIds.has(row.id)) return false;
+    if (!isRecord(row) || typeof row.id !== "string" || (!knownIds.has(row.id) && !(hasCustomRows && /^custom-measure-\d+$/.test(row.id))) || seenIds.has(row.id)) return false;
     seenIds.add(row.id);
-    const values = [row.measure, row.minimum, row.maximum, row.outcome];
+    const values = [row.measure, row.minimum, row.maximum, row.cost, row.outcome];
     if (!values.some((value) => typeof value === "string" && value.trim())) return false;
     if (values.some((value) => value !== undefined && typeof value !== "string")) return false;
     if (typeof row.measure === "string" && row.measure.length > 1000) return false;
     if (typeof row.minimum === "string" && row.minimum.trim() && !validNumberString(row.minimum)) return false;
     if (typeof row.maximum === "string" && row.maximum.trim() && !validNumberString(row.maximum)) return false;
+    if (typeof row.cost === "string" && row.cost.trim() && !validNumberString(row.cost)) return false;
     if (typeof row.outcome === "string" && row.outcome.trim() && (!validNumberString(row.outcome) || Number(row.outcome) > 100)) return false;
     if (typeof row.minimum === "string" && row.minimum.trim() && typeof row.maximum === "string" && row.maximum.trim() && Number(row.minimum) > Number(row.maximum)) return false;
     return true;
@@ -105,8 +107,9 @@ export function formatStructuredResponse(question: Question, response: Structure
   }
   if (question.type === "measures" && response.kind === "measures") {
     return JSON.stringify(response.rows.map((answer) => {
-      const row = question.rows.find((candidate) => candidate.id === answer.id)!;
-      return { measure: row.custom ? (answer.measure || row.measure) : row.measure, minimumCost: answer.minimum, maximumCost: answer.maximum, costUnit: question.unit, expectedOutcomePercent: answer.outcome };
+      const row = question.rows.find((candidate) => candidate.id === answer.id);
+      const custom = !row || row.custom;
+      return { measure: custom ? (answer.measure || "Other suitable measure") : row.measure, minimumCost: answer.minimum, maximumCost: answer.maximum, cost: answer.cost, costUnit: question.unit, expectedOutcomePercent: answer.outcome };
     }));
   }
   throw new Error("Response type does not match question type.");
