@@ -91,13 +91,8 @@ function buildResponse(question: Question, answers: Answers, scope: Questionnair
     const base = key(scope, question.number, row.id);
     return { id: row.id, measure: answers[key(base, "measure")]?.trim(), minimum: answers[key(base, "minimum")]?.trim(), maximum: answers[key(base, "maximum")]?.trim(), outcome: answers[key(base, "outcome")]?.trim() };
   });
-  const complete = rows.every((answer, index) => {
-    const definition = question.rows[index];
-    const any = [answer.measure, answer.minimum, answer.maximum, answer.outcome].some(Boolean);
-    if (definition.custom && !any) return true;
-    return (!definition.custom || Boolean(answer.measure)) && Boolean(answer.minimum) && Boolean(answer.maximum) && Number(answer.minimum) <= Number(answer.maximum) && Boolean(answer.outcome) && Number(answer.outcome) <= 100;
-  });
-  return complete ? { kind: "measures", rows: rows.filter((answer, index) => !question.rows[index].custom || [answer.measure, answer.minimum, answer.maximum, answer.outcome].some(Boolean)) } : null;
+  const providedRows = rows.filter((answer) => [answer.measure, answer.minimum, answer.maximum, answer.outcome].some(Boolean));
+  return providedRows.length ? { kind: "measures", rows: providedRows } : null;
 }
 
 function questionError(question: Question) {
@@ -108,7 +103,7 @@ function questionError(question: Question) {
 
 function QuestionCard({ question, answers, setAnswer, scope, stressor }: FieldProps & { stressor: string }) {
   return <article className="question stress-question-card">
-    <div className="question-kicker">Climate stress · {stressor}</div>
+    <div className="question-kicker">Climate stress · {stressor}{question.type === "measures" && <span className="optional-badge">Optional</span>}</div>
     <div className="question-head"><span>{question.number}</span><div>
       <h3>{question.text}</h3>
       {question.type === "choice" && question.unit && <p className="unit-label">Unit <strong>{question.unit}</strong></p>}
@@ -145,7 +140,7 @@ function QuestionnaireBody({ questionnaire, sectionCode, displayTitle, scope, an
 
   const validateStress = () => {
     for (const question of currentSection.questions) {
-      if (!buildResponse(question, answers, scope)) return questionError(question);
+      if (question.type !== "measures" && !buildResponse(question, answers, scope)) return questionError(question);
     }
     return "";
   };

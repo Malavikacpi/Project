@@ -76,16 +76,20 @@ export function validateStructuredResponse(question: Question, response: unknown
   if (response.kind !== "measures" || !Array.isArray(response.rows)) return false;
   const responseRows = response.rows;
   const knownIds = new Set(question.rows.map((row) => row.id));
-  if (responseRows.some((row) => !isRecord(row) || typeof row.id !== "string" || !knownIds.has(row.id))) return false;
-
-  return question.rows.every((expected) => {
-    const row = responseRows.find((candidate) => isRecord(candidate) && candidate.id === expected.id);
-    if (expected.custom && !row) return true;
-    if (!row) return false;
-    const anyValue = [row.measure, row.minimum, row.maximum, row.outcome].some((value) => typeof value === "string" && value.trim());
-    if (expected.custom && !anyValue) return true;
-    if (expected.custom && (typeof row.measure !== "string" || !row.measure.trim())) return false;
-    return validNumberString(row.minimum) && validNumberString(row.maximum) && validNumberString(row.outcome) && Number(row.outcome) <= 100 && Number(row.minimum) <= Number(row.maximum);
+  if (!responseRows.length || responseRows.length > question.rows.length) return false;
+  const seenIds = new Set<string>();
+  return responseRows.every((row) => {
+    if (!isRecord(row) || typeof row.id !== "string" || !knownIds.has(row.id) || seenIds.has(row.id)) return false;
+    seenIds.add(row.id);
+    const values = [row.measure, row.minimum, row.maximum, row.outcome];
+    if (!values.some((value) => typeof value === "string" && value.trim())) return false;
+    if (values.some((value) => value !== undefined && typeof value !== "string")) return false;
+    if (typeof row.measure === "string" && row.measure.length > 1000) return false;
+    if (typeof row.minimum === "string" && row.minimum.trim() && !validNumberString(row.minimum)) return false;
+    if (typeof row.maximum === "string" && row.maximum.trim() && !validNumberString(row.maximum)) return false;
+    if (typeof row.outcome === "string" && row.outcome.trim() && (!validNumberString(row.outcome) || Number(row.outcome) > 100)) return false;
+    if (typeof row.minimum === "string" && row.minimum.trim() && typeof row.maximum === "string" && row.maximum.trim() && Number(row.minimum) > Number(row.maximum)) return false;
+    return true;
   });
 }
 
@@ -102,7 +106,7 @@ export function formatStructuredResponse(question: Question, response: Structure
   if (question.type === "measures" && response.kind === "measures") {
     return JSON.stringify(response.rows.map((answer) => {
       const row = question.rows.find((candidate) => candidate.id === answer.id)!;
-      return { measure: row.custom ? answer.measure : row.measure, minimumCost: answer.minimum, maximumCost: answer.maximum, costUnit: question.unit, expectedOutcomePercent: answer.outcome };
+      return { measure: row.custom ? (answer.measure || row.measure) : row.measure, minimumCost: answer.minimum, maximumCost: answer.maximum, costUnit: question.unit, expectedOutcomePercent: answer.outcome };
     }));
   }
   throw new Error("Response type does not match question type.");
