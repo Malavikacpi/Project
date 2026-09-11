@@ -39,7 +39,7 @@ function customMeasureRow(question: MeasuresQuestion, index: number): MeasureRow
 
 function measureRowStarted(question: MeasuresQuestion, answers: Answers, scope: string, row: MeasureRow) {
   const base = key(scope, question.number, row.id);
-  return ["measure", "minimum", "maximum", "cost", "outcome"].some((field) => Boolean(answers[key(base, field)]?.trim()));
+  return ["measure", "minimum", "maximum", "outcome"].some((field) => Boolean(answers[key(base, field)]?.trim()));
 }
 
 function visibleCustomMeasureRows(question: MeasuresQuestion, answers: Answers, scope: string) {
@@ -98,7 +98,7 @@ function MeasuresField({ question, answers, setAnswer, scope }: FieldProps) {
     const measureLabel = row.custom ? `Other suitable measure ${Number(customIndex) + 1}` : row.measure;
     return <>
     <td><div className="cost"><input type="number" min="0" aria-label={`${measureLabel} minimum cost`} placeholder="Minimum" value={answers[key(base, "minimum")] ?? ""} onChange={(event) => setAnswer(key(base, "minimum"), event.target.value)} /><input type="number" min="0" aria-label={`${measureLabel} maximum cost`} placeholder="Maximum" value={answers[key(base, "maximum")] ?? ""} onChange={(event) => setAnswer(key(base, "maximum"), event.target.value)} /></div></td>
-    <td className={row.custom ? "unit custom-cost" : "unit"}>{row.custom ? <><input type="number" min="0" aria-label={`${measureLabel} ${q.unit}`} value={answers[key(base, "cost")] ?? ""} onChange={(event) => setAnswer(key(base, "cost"), event.target.value)} /><small>{q.unit}</small></> : q.unit}</td>
+    <td className="unit">{q.unit}</td>
     <td><div className="percent"><input type="number" min="0" max="100" aria-label={`${measureLabel} ${q.outcomeLabel}`} placeholder="0" value={answers[key(base, "outcome")] ?? ""} onChange={(event) => setAnswer(key(base, "outcome"), event.target.value)} /><span>%</span></div></td>
   </>;
   };
