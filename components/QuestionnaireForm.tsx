@@ -10,7 +10,6 @@ type GenerationAsset = "solar" | "wind" | "thermal";
 type Phase = "questions" | "complete" | "move";
 
 const STORAGE_KEY = "climate-questionnaire-progress-v5";
-const SURVEY_TITLE = "Questionnaire for Climate Risk and Resilience Assessment of India’s Power Sector";
 const key = (...parts: string[]) => parts.join("__");
 
 const generationAssets: Array<{ id: GenerationAsset; title: string }> = [
@@ -177,9 +176,8 @@ function FlowCard({ title, description, children }: { title: string; description
 }
 
 function ConsentPage({ onContinue }: { onContinue: () => void }) {
-  return <section className="consent-page" aria-labelledby="survey-title">
+  return <section className="front-page consent-page" aria-label="Survey information">
     <div className="consent-copy">
-      <h1 id="survey-title">{SURVEY_TITLE}</h1>
       <div className="consent-introduction">
         <p>Climate Policy Initiative is conducting this survey to assess how climate-related stresses affect India’s power sector and to identify appropriate measures to strengthen its resilience and reliability.</p>
         <p>This survey is intended solely for research and analytical purposes and should take approximately 15–20 minutes to complete.</p>
@@ -366,8 +364,8 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
 
   const finalContent = view === "submitted" ? <section className="completion-page"><div className="completion-mark">✓</div><p className="eyebrow-light">Submission received</p><h2>Thank you for completing the questionnaire.</h2><p>Your response has been stored securely.</p><small>Submission ID: {submissionId}</small><p className="confidentiality">Responses are recorded confidentially and used only for aggregate risk-profile analysis.</p></section> : <section className="completion-page"><p className="eyebrow-light">Final step</p><h2>You have completed the questionnaire.</h2><p>Review or add the optional final details below, then submit your response.</p><div className="final-details"><label>{questionnaires.distribution.commentsLabel}<textarea rows={4} value={answers[key("global", "comments")] ?? ""} onChange={(event) => setAnswer(key("global", "comments"), event.target.value)} /></label><div className="details-grid">{questionnaires.distribution.respondentFields.map((label) => <label key={label}>{label}<input type={label === "Date" ? "date" : "text"} value={answers[key("global", "respondent", label.toLowerCase())] ?? ""} onChange={(event) => setAnswer(key("global", "respondent", label.toLowerCase()), event.target.value)} /></label>)}</div></div>{submitError && <p className="validation-error" role="alert">{submitError}</p>}<div className="final-actions"><button onClick={() => openView("home")}>← Back to Power System selection</button><button className="primary-action submit-response" disabled={submitting} onClick={submit}>{submitting ? "Submitting…" : "Submit Response"}</button></div><p className="confidentiality">Responses are recorded confidentially and used only for aggregate risk-profile analysis.</p></section>;
 
-  return <main className={view === "consent" ? "page-shell landing-shell" : "page-shell"}><div className={view === "consent" ? "app-frame landing-frame" : "app-frame"}>
-    {view !== "consent" && <header className="hero"><div className="hero-inner header-only"><div><h1>{titleLead}<span className="title-accent">Power Sector</span>{titleTail}</h1></div></div></header>}
+  return <main className="page-shell"><div className="app-frame">
+    <header className="hero"><div className="hero-inner header-only"><div><h1>{titleLead}<span className="title-accent">Power Sector</span>{titleTail}</h1></div></div></header>
     {view === "consent" ? <ConsentPage onContinue={continueFromConsent} /> : view === "final" || view === "submitted" ? finalContent : view === "home" ? <section className="front-page">
       <div className="front-heading"><p>Questionnaire</p><h2>Select Power System Asset</h2><span>Please select the relevant power system asset to continue with the questionnaire.</span></div>
       <div className="section-card-grid">
