@@ -4,10 +4,17 @@ import { findQuestion, formatStructuredResponse, isQuestionnaireScope, validateS
 export const runtime = "nodejs";
 
 const textValue = (value: unknown, maximum: number) => typeof value === "string" ? value.trim().slice(0, maximum) : "";
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    const consent = body?.consent;
+    const consentedAt = typeof consent?.timestamp === "string" ? consent.timestamp : "";
+    const sessionId = typeof consent?.sessionId === "string" ? consent.sessionId : "";
+    if (consent?.given !== true || !UUID_PATTERN.test(sessionId) || !consentedAt || Number.isNaN(Date.parse(consentedAt))) {
+      return Response.json({ error: "Valid survey consent is required before submission." }, { status: 400 });
+    }
     if (!body || !Array.isArray(body.responses) || body.responses.length === 0 || body.responses.length > 200) {
       return Response.json({ error: "A valid set of questionnaire responses is required." }, { status: 400 });
     }
@@ -50,8 +57,8 @@ export async function POST(request: Request) {
     const sql = getDatabase();
     await sql`
       WITH new_submission AS (
-        INSERT INTO questionnaire_submissions (id, submitted_at, comments, respondent_details)
-        VALUES (${submissionId}, ${submittedAt}::timestamptz, ${textValue(body.comments, 5000)}, ${JSON.stringify(respondent)}::jsonb)
+        INSERT INTO questionnaire_submissions (id, submitted_at, session_id, consent_given, consented_at, comments, respondent_details)
+        VALUES (${submissionId}, ${submittedAt}::timestamptz, ${sessionId}::uuid, true, ${consentedAt}::timestamptz, ${textValue(body.comments, 5000)}, ${JSON.stringify(respondent)}::jsonb)
         RETURNING id
       )
       INSERT INTO questionnaire_responses (

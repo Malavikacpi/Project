@@ -5,12 +5,13 @@ import type { MatrixQuestion, MeasureRow, MeasuresQuestion, Question, Questionna
 import type { QuestionnaireScope, StructuredResponse, SubmissionResponse } from "@/lib/submissions";
 
 type Answers = Record<string, string>;
-type View = "home" | "generation" | "transmission" | "distribution" | "final" | "submitted";
+type View = "consent" | "home" | "generation" | "transmission" | "distribution" | "final" | "submitted";
 type GenerationAsset = "solar" | "wind" | "thermal";
 type Phase = "questions" | "complete" | "move";
 
-const STORAGE_KEY = "climate-questionnaire-progress-v4";
+const STORAGE_KEY = "climate-questionnaire-progress-v5";
 const GENERAL_INTRODUCTION = "Please answer the following questions based on your observations and experience in the power sector. Your responses will help assess how climate-related stresses affect the power sector and identify appropriate measures to strengthen its resilience.";
+const SURVEY_TITLE = "Questionnaire for Climate Risk and Resilience Assessment of India’s Power Sector";
 const key = (...parts: string[]) => parts.join("__");
 
 const generationAssets: Array<{ id: GenerationAsset; title: string }> = [
@@ -176,6 +177,32 @@ function FlowCard({ title, description, children }: { title: string; description
   return <section className="flow-card"><p className="eyebrow-light">Questionnaire progress</p><h2>{title}</h2><p>{description}</p><div className="flow-actions">{children}</div></section>;
 }
 
+function ConsentPage({ checked, onChange, onContinue }: { checked: boolean; onChange: (checked: boolean) => void; onContinue: () => void }) {
+  return <section className="consent-page" aria-labelledby="survey-title">
+    <div className="consent-copy">
+      <h1 id="survey-title">{SURVEY_TITLE}</h1>
+      <div className="consent-introduction">
+        <p>Climate Policy Initiative is conducting this survey to assess how climate-related stresses affect India’s power sector and to identify appropriate measures to strengthen its resilience and reliability.</p>
+        <p>This survey is intended solely for research and analytical purposes and should take approximately 15–20 minutes to complete.</p>
+        <p>No personal information is required to complete the survey. Any personal information that you choose to provide voluntarily will be used only for the purposes of categorizing responses by stakeholder type. Survey findings will be reported in aggregate form, and individual responses will not be attributed to identifiable participants.</p>
+        <p>By submitting this survey, you consent to the collection and processing of your responses for the purposes described above.</p>
+        <p>We sincerely appreciate your time and valuable insights.</p>
+      </div>
+    </div>
+    <div className="consent-action-area">
+      <fieldset className="consent-fieldset">
+        <legend>Consent to participate</legend>
+        <label className="consent-check">
+          <input type="checkbox" required checked={checked} onChange={(event) => onChange(event.target.checked)} />
+          <span>I have read and understood the information above and consent to participate in this survey.</span>
+        </label>
+        {!checked && <p className="consent-validation">Please select the consent checkbox to continue.</p>}
+      </fieldset>
+      <button className="primary-action consent-continue" disabled={!checked} onClick={onContinue}>Continue to questionnaire →</button>
+    </div>
+  </section>;
+}
+
 type QuestionnaireBodyProps = {
   questionnaire: Questionnaire;
   sectionCode: string;
@@ -243,10 +270,14 @@ function QuestionnaireBody({ questionnaire, sectionCode, displayTitle, scope, an
 
 export default function QuestionnaireForm({ questionnaires }: { questionnaires: QuestionnaireCollection }) {
   const [answers, setAnswers] = useState<Answers>({});
-  const [view, setView] = useState<View>("home");
+  const [view, setView] = useState<View>("consent");
   const [selectedAsset, setSelectedAsset] = useState<GenerationAsset | null>(null);
   const [stressIndexes, setStressIndexes] = useState<Record<string, number>>({});
   const [phase, setPhase] = useState<Phase>("questions");
+  const [consentChecked, setConsentChecked] = useState(false);
+  const [consentGiven, setConsentGiven] = useState(false);
+  const [consentTimestamp, setConsentTimestamp] = useState("");
+  const [sessionId, setSessionId] = useState("");
   const [hydrated, setHydrated] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -260,17 +291,33 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
         const state = JSON.parse(stored);
         if (state.answers && typeof state.answers === "object") setAnswers(state.answers);
         if (state.stressIndexes && typeof state.stressIndexes === "object") setStressIndexes(state.stressIndexes);
-        if (["home", "generation", "transmission", "distribution", "final"].includes(state.view)) setView(state.view);
+        if (state.consentGiven === true && typeof state.consentTimestamp === "string" && typeof state.sessionId === "string") {
+          setConsentChecked(true);
+          setConsentGiven(true);
+          setConsentTimestamp(state.consentTimestamp);
+          setSessionId(state.sessionId);
+          if (["home", "generation", "transmission", "distribution", "final"].includes(state.view)) setView(state.view);
+        }
         if (["solar", "wind", "thermal"].includes(state.selectedAsset)) setSelectedAsset(state.selectedAsset);
       }
     } catch { /* Ignore malformed or unavailable browser-session storage. */ }
+    setSessionId((current) => current || crypto.randomUUID());
     setHydrated(true);
   }, []);
 
   useEffect(() => {
     if (!hydrated || view === "submitted") return;
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ answers, stressIndexes, view, selectedAsset }));
-  }, [answers, hydrated, selectedAsset, stressIndexes, view]);
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ answers, stressIndexes, view, selectedAsset, consentGiven, consentTimestamp, sessionId }));
+  }, [answers, consentGiven, consentTimestamp, hydrated, selectedAsset, sessionId, stressIndexes, view]);
+
+  const continueFromConsent = () => {
+    if (!consentChecked) return;
+    setConsentGiven(true);
+    setConsentTimestamp(new Date().toISOString());
+    setSessionId((current) => current || crypto.randomUUID());
+    setView("home");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const setAnswer = (name: string, value: string) => setAnswers((current) => ({ ...current, [name]: value }));
   const activeQuestionnaire = view === "generation" && selectedAsset ? questionnaires.generation[selectedAsset] : view === "transmission" ? questionnaires.transmission : view === "distribution" ? questionnaires.distribution : null;
@@ -309,7 +356,7 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
     setSubmitError("");
     try {
       const respondent = Object.fromEntries(questionnaires.distribution.respondentFields.map((label) => [label, answers[key("global", "respondent", label.toLowerCase())] ?? ""]));
-      const response = await fetch("/api/responses", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ responses, comments: answers[key("global", "comments")] ?? "", respondent }) });
+      const response = await fetch("/api/responses", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ responses, comments: answers[key("global", "comments")] ?? "", respondent, consent: { given: consentGiven, timestamp: consentTimestamp, sessionId } }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "The response could not be stored.");
       setSubmissionId(result.submissionId);
@@ -332,9 +379,9 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
 
   const finalContent = view === "submitted" ? <section className="completion-page"><div className="completion-mark">✓</div><p className="eyebrow-light">Submission received</p><h2>Thank you for completing the questionnaire.</h2><p>Your response has been stored securely.</p><small>Submission ID: {submissionId}</small><p className="confidentiality">Responses are recorded confidentially and used only for aggregate risk-profile analysis.</p></section> : <section className="completion-page"><p className="eyebrow-light">Final step</p><h2>You have completed the questionnaire.</h2><p>Review or add the optional final details below, then submit your response.</p><div className="final-details"><label>{questionnaires.distribution.commentsLabel}<textarea rows={4} value={answers[key("global", "comments")] ?? ""} onChange={(event) => setAnswer(key("global", "comments"), event.target.value)} /></label><div className="details-grid">{questionnaires.distribution.respondentFields.map((label) => <label key={label}>{label}<input type={label === "Date" ? "date" : "text"} value={answers[key("global", "respondent", label.toLowerCase())] ?? ""} onChange={(event) => setAnswer(key("global", "respondent", label.toLowerCase()), event.target.value)} /></label>)}</div></div>{submitError && <p className="validation-error" role="alert">{submitError}</p>}<div className="final-actions"><button onClick={() => openView("home")}>← Back to Power System selection</button><button className="primary-action submit-response" disabled={submitting} onClick={submit}>{submitting ? "Submitting…" : "Submit Response"}</button></div><p className="confidentiality">Responses are recorded confidentially and used only for aggregate risk-profile analysis.</p></section>;
 
-  return <main className="page-shell"><div className="app-frame">
-    <header className="hero"><div className="hero-inner header-only"><div><h1>{titleLead}<span className="title-accent">Power Sector</span>{titleTail}</h1><p>{GENERAL_INTRODUCTION}</p></div></div></header>
-    {view === "final" || view === "submitted" ? finalContent : view === "home" ? <section className="front-page">
+  return <main className={view === "consent" ? "page-shell landing-shell" : "page-shell"}><div className={view === "consent" ? "app-frame landing-frame" : "app-frame"}>
+    {view !== "consent" && <header className="hero"><div className="hero-inner header-only"><div><h1>{titleLead}<span className="title-accent">Power Sector</span>{titleTail}</h1><p>{GENERAL_INTRODUCTION}</p></div></div></header>}
+    {view === "consent" ? <ConsentPage checked={consentChecked} onChange={setConsentChecked} onContinue={continueFromConsent} /> : view === "final" || view === "submitted" ? finalContent : view === "home" ? <section className="front-page">
       <div className="front-heading"><p>Questionnaire</p><h2>Select Power System Asset</h2><span>Please select the relevant power system asset to continue with the questionnaire.</span></div>
       <div className="section-card-grid">
         <button className="section-card" onClick={() => openView("generation")}><div><small>Power system asset</small><strong>Generation</strong><p>Solar, Wind and Thermal power generation assets</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
@@ -348,4 +395,3 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
     </section> : <div className="workspace">{renderActiveSidebar()}<section className="content"><button className="back-link mobile-system-back" onClick={() => openView("home")}><span>←</span> Back to Power System selection</button>{activeQuestionnaire && activeScope && <QuestionnaireBody questionnaire={activeQuestionnaire} sectionCode={activeSectionCode} displayTitle={activeTitle} scope={activeScope} answers={answers} setAnswer={setAnswer} stressIndex={currentStressIndex} setStressIndex={(index) => setStressIndexes((current) => ({ ...current, [activeScope]: index }))} phase={phase} setPhase={setPhase} onMoveSections={() => openView("home")} onFinish={() => { setView("final"); window.scrollTo({ top: 0, behavior: "smooth" }); }} />}</section></div>}
   </div></main>;
 }
-

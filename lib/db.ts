@@ -16,6 +16,9 @@ export function ensureSchema() {
       CREATE TABLE IF NOT EXISTS questionnaire_submissions (
         id uuid PRIMARY KEY,
         submitted_at timestamptz NOT NULL DEFAULT now(),
+        session_id uuid,
+        consent_given boolean NOT NULL DEFAULT false,
+        consented_at timestamptz,
         comments text,
         respondent_details jsonb NOT NULL DEFAULT '{}'::jsonb
       )
@@ -38,6 +41,9 @@ export function ensureSchema() {
     `;
     await sql`ALTER TABLE questionnaire_responses ADD COLUMN IF NOT EXISTS system_category text`;
     await sql`ALTER TABLE questionnaire_responses ADD COLUMN IF NOT EXISTS asset_name text`;
+    await sql`ALTER TABLE questionnaire_submissions ADD COLUMN IF NOT EXISTS session_id uuid`;
+    await sql`ALTER TABLE questionnaire_submissions ADD COLUMN IF NOT EXISTS consent_given boolean NOT NULL DEFAULT false`;
+    await sql`ALTER TABLE questionnaire_submissions ADD COLUMN IF NOT EXISTS consented_at timestamptz`;
     await sql`CREATE INDEX IF NOT EXISTS questionnaire_responses_submission_idx ON questionnaire_responses(submission_id)`;
   })().catch((error) => {
     schemaPromise = null;

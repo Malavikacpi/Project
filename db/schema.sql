@@ -1,6 +1,9 @@
 CREATE TABLE IF NOT EXISTS questionnaire_submissions (
   id uuid PRIMARY KEY,
   submitted_at timestamptz NOT NULL DEFAULT now(),
+  session_id uuid,
+  consent_given boolean NOT NULL DEFAULT false,
+  consented_at timestamptz,
   comments text,
   respondent_details jsonb NOT NULL DEFAULT '{}'::jsonb
 );

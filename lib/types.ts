@@ -50,4 +50,3 @@ export type QuestionnaireCollection = {
   transmission: Questionnaire;
   distribution: Questionnaire;
 };
-
