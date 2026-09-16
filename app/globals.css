@@ -18,7 +18,7 @@
   font-family: "Whitney";
   src: url("/fonts/whitney/Whitney-Semibold-Adv.otf") format("opentype");
   font-style: normal;
-  font-weight: 600 800;
+  font-weight: 600;
   font-display: swap;
 }
 
@@ -34,7 +34,7 @@
   font-family: "Mercury SSm";
   src: url("/fonts/mercury/MercurySSm-Medium_Web.woff2") format("woff2");
   font-style: normal;
-  font-weight: 500 600;
+  font-weight: 500;
   font-display: swap;
 }
 
@@ -47,14 +47,15 @@
 }
 
 :root {
-  --font-whitney: "Whitney", Arial, Helvetica, sans-serif;
-  --font-mercury: "Mercury SSm", Georgia, "Times New Roman", serif;
+  --font-body: "Whitney", Arial, Helvetica, sans-serif;
+  --font-heading: "Mercury SSm", Georgia, "Times New Roman", serif;
   --ink: #243744;
   --ink-soft: #354b59;
   --muted: #687985;
-  --maroon: #8f2f2a;
-  --red: #b53c36;
-  --red-bright: #b53c36;
+  --cpi-red: #b53c36;
+  --maroon: var(--cpi-red);
+  --red: var(--cpi-red);
+  --red-bright: var(--cpi-red);
   --red-soft: #fbf1f0;
   --cream: #faf8f3;
   --cream-deep: #f2efe9;
@@ -77,8 +78,8 @@ body {
   margin: 0;
   background: #f1f0ed;
   color: var(--ink);
-  font-family: var(--font-whitney);
-  font-size: 14px;
+  font-family: var(--font-body);
+  font-size: 15px;
   line-height: 1.5;
 }
 
@@ -101,7 +102,8 @@ button,
 input,
 select,
 textarea {
-  font: inherit;
+  font-family: var(--font-body);
+  font-style: normal;
 }
 
 button,
@@ -173,8 +175,8 @@ select {
 .hero h1 {
   max-width: 720px;
   margin: 8px 0 13px;
-  font-family: var(--font-mercury);
-  font-size: clamp(27px, 3vw, 42px);
+  font-family: var(--font-heading);
+  font-size: clamp(26px, 2.6vw, 36px);
   font-weight: 500;
   letter-spacing: -1.2px;
   line-height: 1.08;
@@ -189,7 +191,7 @@ select {
   max-width: 650px;
   margin: 0;
   color: #e1dada;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 1.55;
 }
 
@@ -231,7 +233,7 @@ select {
 .page-heading > p {
   margin: 0 0 6px;
   color: var(--red);
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -242,7 +244,7 @@ select {
   position: relative;
   margin: 0 0 16px;
   padding-bottom: 13px;
-  font-family: var(--font-mercury);
+  font-family: var(--font-heading);
   font-size: 29px;
   font-weight: 600;
   line-height: 1.2;
@@ -265,7 +267,7 @@ select {
   display: block;
   max-width: 850px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 16px;
 }
 
 .section-card-grid {
@@ -309,7 +311,7 @@ select {
 
 .section-card:focus-visible,
 .asset-card:focus-visible {
-  outline: 3px solid rgba(189, 38, 51, .24);
+  outline: 3px solid rgba(181, 60, 54, .24);
   outline-offset: 3px;
   border-color: var(--red);
 }
@@ -328,7 +330,7 @@ select {
   display: block;
   margin: 0 0 7px;
   color: var(--red);
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.25px;
   text-transform: uppercase;
@@ -336,7 +338,7 @@ select {
 
 .section-card strong {
   display: block;
-  font-family: var(--font-mercury);
+  font-family: var(--font-heading);
   font-size: 20px;
   line-height: 1.25;
 }
@@ -345,7 +347,7 @@ select {
   max-width: 235px;
   margin: 7px 20px 0 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.45;
 }
 
@@ -393,7 +395,7 @@ select {
   background: transparent;
   color: var(--red);
   cursor: pointer;
-  font-size: 10px;
+  font-size: 15px;
   font-weight: 700;
   text-align: left;
 }
@@ -425,14 +427,14 @@ select {
 .side-heading p {
   margin: 0 0 6px;
   color: var(--red);
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
 
 .side-heading strong {
-  font-family: var(--font-mercury);
+  font-family: var(--font-heading);
   font-size: 18px;
   line-height: 1.3;
 }
@@ -455,7 +457,7 @@ select {
   background: transparent;
   color: #59616a;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.35;
   text-align: left;
   transition: background .16s ease, border-color .16s ease, color .16s ease;
@@ -471,7 +473,7 @@ select {
 .stressor-nav button > span {
   min-width: 24px;
   color: #7d858c;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 700;
 }
 
@@ -515,7 +517,7 @@ select {
 .stressor-nav > p {
   margin: 0 0 7px 10px;
   color: var(--red);
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -535,7 +537,7 @@ select {
   background: transparent;
   color: var(--red);
   cursor: pointer;
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 700;
 }
 
@@ -596,12 +598,12 @@ select {
 .asset-card.selected {
   border-color: var(--red);
   background: var(--red-soft);
-  box-shadow: inset 0 0 0 1px rgba(189, 38, 51, .08);
+  box-shadow: inset 0 0 0 1px rgba(181, 60, 54, .08);
 }
 
 .asset-card strong {
   display: block;
-  font-family: var(--font-mercury);
+  font-family: var(--font-heading);
   font-size: 18px;
 }
 
@@ -631,7 +633,7 @@ select {
 
 .placeholder-label {
   color: var(--red);
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -639,14 +641,14 @@ select {
 
 .placeholder-panel h3 {
   margin: 5px 0 7px;
-  font-family: var(--font-mercury);
+  font-family: var(--font-heading);
   font-size: 19px;
 }
 
 .placeholder-panel p {
   margin: 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .instruction-box {
@@ -660,12 +662,12 @@ select {
 
 .instruction-box strong {
   color: var(--red);
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .instruction-box p {
   margin: 5px 0 0;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .toolbar {
@@ -678,14 +680,14 @@ select {
   border-radius: 7px;
   background: rgba(255, 255, 255, .76);
   color: var(--muted);
-  font-size: 11px;
+  font-size: 14px;
   justify-content: space-between;
   gap: 14px;
 }
 
 .toolbar > strong {
   color: var(--ink-soft);
-  font-size: 10px;
+  font-size: 14px;
 }
 
 .status-dot {
@@ -718,7 +720,7 @@ select {
   border: 1px solid #d9949a;
   border-radius: 50%;
   color: var(--red);
-  font-family: var(--font-mercury);
+  font-family: var(--font-heading);
   font-size: 15px;
   font-weight: 700;
 }
@@ -726,7 +728,7 @@ select {
 .section-title p {
   margin: 0 0 2px;
   color: var(--red);
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.8px;
   text-transform: uppercase;
@@ -734,9 +736,9 @@ select {
 
 .section-title h2 {
   margin: 0;
-  font-family: var(--font-mercury);
-  font-size: 24px;
-  font-weight: 600;
+  font-family: var(--font-heading);
+  font-size: 27px;
+  font-weight: 500;
   line-height: 1.2;
 }
 
@@ -772,7 +774,7 @@ select {
 .eyebrow-light {
   margin: 0 0 13px;
   color: var(--red);
-  font-size: 8.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.7px;
   text-transform: uppercase;
@@ -786,7 +788,7 @@ select {
   border-radius: 10px;
   background: #fff7f7;
   color: var(--maroon);
-  font-size: 7px;
+  font-size: 12px;
   letter-spacing: .8px;
   vertical-align: 1px;
 }
@@ -812,14 +814,15 @@ select {
 
 .question-head > span {
   color: var(--red);
-  font-family: var(--font-mercury);
-  font-size: 14px;
+  font-family: var(--font-heading);
+  font-family: var(--font-body);
+  font-size: 15px;
   font-weight: 700;
 }
 
 .question h3 {
   margin: 0 0 14px;
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 600;
   line-height: 1.45;
 }
@@ -833,7 +836,7 @@ select {
   border-radius: 3px;
   background: #faf8f6;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 14px;
 }
 
 .unit-label strong {
@@ -872,7 +875,7 @@ select {
   gap: 9px;
   padding: 9px 10px;
   cursor: pointer;
-  font-size: 11.5px;
+  font-size: 15px;
   line-height: 1.4;
 }
 
@@ -899,7 +902,8 @@ table {
   width: 100%;
   min-width: 680px;
   border-collapse: collapse;
-  font-size: 10.5px;
+  font-family: var(--font-body);
+  font-size: 14px;
 }
 
 th,
@@ -913,7 +917,7 @@ td {
 thead th {
   background: #f2f4f4;
   color: var(--ink);
-  font-size: 8.5px;
+  font-size: 13px;
   letter-spacing: .5px;
   text-transform: uppercase;
 }
@@ -933,7 +937,8 @@ textarea {
   outline: none;
   background: #fff;
   color: var(--ink);
-  font-size: 11px;
+  font-family: var(--font-body);
+  font-size: 15px;
 }
 
 select {
@@ -944,7 +949,7 @@ select:focus,
 input:focus,
 textarea:focus {
   border-color: var(--red);
-  box-shadow: 0 0 0 2px rgba(189, 38, 51, .1);
+  box-shadow: 0 0 0 2px rgba(181, 60, 54, .1);
 }
 
 .measures th:nth-child(1) {
@@ -981,7 +986,7 @@ textarea:focus {
   display: block;
   margin-top: 4px;
   color: var(--muted);
-  font-size: 8.5px;
+  font-size: 14px;
 }
 
 .percent {
@@ -996,7 +1001,7 @@ textarea:focus {
 
 .custom-measure-row > td:first-child {
   color: var(--red);
-  font-family: var(--font-mercury);
+  font-family: var(--font-heading);
   font-weight: 700;
 }
 
@@ -1007,7 +1012,7 @@ textarea:focus {
 
 .custom-measure-label > span {
   color: var(--ink-soft);
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
 }
 
@@ -1032,7 +1037,7 @@ textarea:focus {
   padding: 0;
   border: 0;
   color: var(--ink-soft);
-  font-size: 10.5px;
+  font-size: 14px;
 }
 
 .custom-measure-prompt legend {
@@ -1052,7 +1057,7 @@ textarea:focus {
   gap: 5px;
   color: var(--ink-soft);
   cursor: pointer;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
 }
 
@@ -1067,7 +1072,7 @@ textarea:focus {
 .block-label {
   display: block;
   margin-bottom: 11px;
-  font-family: var(--font-mercury);
+  font-family: var(--font-heading);
   font-size: 15px;
 }
 
@@ -1078,7 +1083,7 @@ textarea {
 
 .hint {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 15px;
 }
 
 .details-grid {
@@ -1089,7 +1094,7 @@ textarea {
 
 .details-grid label {
   color: var(--muted);
-  font-size: 8.5px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: .9px;
   text-transform: uppercase;
@@ -1113,7 +1118,7 @@ textarea {
 .question-navigation > span {
   margin-right: auto;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 14px;
 }
 
 .progressive-section {
@@ -1148,8 +1153,8 @@ textarea {
   border: 1px solid #e8b9bd;
   border-radius: 5px;
   background: #fff1f1;
-  color: #8c1722;
-  font-size: 11px;
+  color: var(--cpi-red);
+  font-size: 14px;
 }
 
 .flow-card,
@@ -1166,7 +1171,7 @@ textarea {
 .flow-card h2,
 .completion-page h2 {
   margin: 0 0 11px;
-  font-family: var(--font-mercury);
+  font-family: var(--font-heading);
   font-size: 27px;
   line-height: 1.2;
 }
@@ -1175,7 +1180,7 @@ textarea {
 .completion-page > p:not(.eyebrow-light):not(.confidentiality) {
   margin: 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 16px;
 }
 
 .flow-actions,
@@ -1195,7 +1200,7 @@ textarea {
   background: #fff;
   color: var(--ink-soft);
   cursor: pointer;
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 700;
 }
 
@@ -1227,7 +1232,7 @@ textarea {
   display: block;
   margin-top: 16px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 14px;
 }
 
 .final-details {
@@ -1240,8 +1245,8 @@ textarea {
 
 .final-details > label {
   color: var(--ink-soft);
-  font-family: var(--font-mercury);
-  font-size: 14px;
+  font-family: var(--font-heading);
+  font-size: 18px;
 }
 
 .final-details textarea {
@@ -1260,7 +1265,7 @@ textarea {
   border-left: 3px solid var(--red);
   background: #faf5f2;
   color: var(--muted);
-  font-size: 10.5px;
+  font-size: 14px;
 }
 
 .question-navigation button,
@@ -1273,7 +1278,8 @@ textarea {
   background: #fff;
   color: var(--ink-soft);
   cursor: pointer;
-  font-size: 11px;
+  font-family: var(--font-body);
+  font-size: 14px;
   font-weight: 700;
   transition: background .16s ease, border-color .16s ease, transform .16s ease;
 }
@@ -1307,13 +1313,13 @@ textarea {
   padding: 17px 0;
   border-top: 1px solid var(--line-strong);
   color: var(--muted);
-  font-size: 11px;
+  font-size: 15px;
 }
 
 .finish strong {
   margin-right: 4px;
   color: var(--red);
-  font-family: var(--font-mercury);
+  font-family: var(--font-heading);
   font-size: 22px;
 }
 
@@ -1326,13 +1332,12 @@ textarea {
 .placeholder-panel h3,
 .section-title > span,
 .section-title h2,
-.question-head > span,
 .block-label,
 .flow-card h2,
 .completion-page h2,
 .final-details > label,
 .finish strong {
-  font-family: var(--font-mercury);
+  font-family: var(--font-heading);
   letter-spacing: 0;
 }
 
@@ -1367,8 +1372,8 @@ textarea {
   max-width: 880px;
   margin: 0 0 36px;
   color: var(--ink);
-  font-family: var(--font-mercury);
-  font-size: 54px;
+  font-family: var(--font-heading);
+  font-size: 40px;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.08;
@@ -1387,8 +1392,8 @@ textarea {
 .consent-introduction {
   max-width: 790px;
   color: var(--ink-soft);
-  font-size: 15px;
-  line-height: 1.65;
+  font-size: 17px;
+  line-height: 1.58;
 }
 
 .consent-introduction p {
@@ -1402,71 +1407,18 @@ textarea {
 }
 
 .consent-action-area {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: 30px;
+  display: flex;
+  justify-content: flex-end;
   margin-top: 46px;
   padding-top: 30px;
   border-top: 1px solid var(--line-strong);
 }
 
-.consent-fieldset {
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.consent-fieldset legend {
-  margin: 0 0 13px;
-  padding: 0;
-  color: var(--ink);
-  font-family: var(--font-mercury);
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.consent-check {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  max-width: 700px;
-  color: var(--ink-soft);
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.consent-check input {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 18px;
-  margin: 2px 0 0;
-  padding: 0;
-  accent-color: var(--red);
-}
-
-.consent-validation {
-  margin: 9px 0 0 30px;
-  color: #8f2f2a;
-  font-size: 11px;
-}
-
 .consent-continue {
   min-height: 42px;
   padding: 10px 17px;
+  font-size: 15px;
   white-space: nowrap;
-}
-
-.consent-continue:disabled {
-  border-color: #c9cecf;
-  background: #c9cecf;
-  color: #fff;
-  cursor: not-allowed;
-  filter: none;
-  opacity: 1;
-  transform: none;
 }
 
 @media (max-width: 1020px) {
@@ -1475,7 +1427,7 @@ textarea {
   }
 
   .consent-page h1 {
-    font-size: 44px;
+    font-size: 38px;
   }
 
   .section-card-grid,
@@ -1545,7 +1497,7 @@ textarea {
 
 @media (max-width: 700px) {
   body {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .page-shell {
@@ -1569,7 +1521,7 @@ textarea {
 
   .consent-page h1 {
     margin-bottom: 28px;
-    font-size: 34px;
+    font-size: 32px;
     line-height: 1.12;
   }
 
@@ -1578,19 +1530,13 @@ textarea {
   }
 
   .consent-introduction {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.58;
   }
 
   .consent-action-area {
-    grid-template-columns: 1fr;
-    gap: 22px;
     margin-top: 34px;
     padding-top: 24px;
-  }
-
-  .consent-fieldset legend {
-    font-size: 19px;
   }
 
   .consent-continue {
@@ -1619,7 +1565,7 @@ textarea {
   }
 
   .hero p:not(.eyebrow) {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .hero-mark {
@@ -1694,7 +1640,7 @@ textarea {
   }
 
   .section-title h2 {
-    font-size: 20px;
+    font-size: 26px;
   }
 
   .question {
@@ -1715,7 +1661,7 @@ textarea {
   }
 
   .question h3 {
-    font-size: 13.5px;
+    font-size: 17px;
   }
 
   .choice-grid {

@@ -177,7 +177,7 @@ function FlowCard({ title, description, children }: { title: string; description
   return <section className="flow-card"><p className="eyebrow-light">Questionnaire progress</p><h2>{title}</h2><p>{description}</p><div className="flow-actions">{children}</div></section>;
 }
 
-function ConsentPage({ checked, onChange, onContinue }: { checked: boolean; onChange: (checked: boolean) => void; onContinue: () => void }) {
+function ConsentPage({ onContinue }: { onContinue: () => void }) {
   return <section className="consent-page" aria-labelledby="survey-title">
     <div className="consent-copy">
       <h1 id="survey-title">{SURVEY_TITLE}</h1>
@@ -190,15 +190,7 @@ function ConsentPage({ checked, onChange, onContinue }: { checked: boolean; onCh
       </div>
     </div>
     <div className="consent-action-area">
-      <fieldset className="consent-fieldset">
-        <legend>Consent to participate</legend>
-        <label className="consent-check">
-          <input type="checkbox" required checked={checked} onChange={(event) => onChange(event.target.checked)} />
-          <span>I have read and understood the information above and consent to participate in this survey.</span>
-        </label>
-        {!checked && <p className="consent-validation">Please select the consent checkbox to continue.</p>}
-      </fieldset>
-      <button className="primary-action consent-continue" disabled={!checked} onClick={onContinue}>Continue to questionnaire →</button>
+      <button className="primary-action consent-continue" onClick={onContinue}>Continue to questionnaire →</button>
     </div>
   </section>;
 }
@@ -274,7 +266,6 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
   const [selectedAsset, setSelectedAsset] = useState<GenerationAsset | null>(null);
   const [stressIndexes, setStressIndexes] = useState<Record<string, number>>({});
   const [phase, setPhase] = useState<Phase>("questions");
-  const [consentChecked, setConsentChecked] = useState(false);
   const [consentGiven, setConsentGiven] = useState(false);
   const [consentTimestamp, setConsentTimestamp] = useState("");
   const [sessionId, setSessionId] = useState("");
@@ -292,7 +283,6 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
         if (state.answers && typeof state.answers === "object") setAnswers(state.answers);
         if (state.stressIndexes && typeof state.stressIndexes === "object") setStressIndexes(state.stressIndexes);
         if (state.consentGiven === true && typeof state.consentTimestamp === "string" && typeof state.sessionId === "string") {
-          setConsentChecked(true);
           setConsentGiven(true);
           setConsentTimestamp(state.consentTimestamp);
           setSessionId(state.sessionId);
@@ -311,7 +301,6 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
   }, [answers, consentGiven, consentTimestamp, hydrated, selectedAsset, sessionId, stressIndexes, view]);
 
   const continueFromConsent = () => {
-    if (!consentChecked) return;
     setConsentGiven(true);
     setConsentTimestamp(new Date().toISOString());
     setSessionId((current) => current || crypto.randomUUID());
@@ -381,7 +370,7 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
 
   return <main className={view === "consent" ? "page-shell landing-shell" : "page-shell"}><div className={view === "consent" ? "app-frame landing-frame" : "app-frame"}>
     {view !== "consent" && <header className="hero"><div className="hero-inner header-only"><div><h1>{titleLead}<span className="title-accent">Power Sector</span>{titleTail}</h1><p>{GENERAL_INTRODUCTION}</p></div></div></header>}
-    {view === "consent" ? <ConsentPage checked={consentChecked} onChange={setConsentChecked} onContinue={continueFromConsent} /> : view === "final" || view === "submitted" ? finalContent : view === "home" ? <section className="front-page">
+    {view === "consent" ? <ConsentPage onContinue={continueFromConsent} /> : view === "final" || view === "submitted" ? finalContent : view === "home" ? <section className="front-page">
       <div className="front-heading"><p>Questionnaire</p><h2>Select Power System Asset</h2><span>Please select the relevant power system asset to continue with the questionnaire.</span></div>
       <div className="section-card-grid">
         <button className="section-card" onClick={() => openView("generation")}><div><small>Power system asset</small><strong>Generation</strong><p>Solar, Wind and Thermal power generation assets</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
