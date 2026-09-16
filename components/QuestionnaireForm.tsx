@@ -10,7 +10,6 @@ type GenerationAsset = "solar" | "wind" | "thermal";
 type Phase = "questions" | "complete" | "move";
 
 const STORAGE_KEY = "climate-questionnaire-progress-v5";
-const GENERAL_INTRODUCTION = "Please answer the following questions based on your observations and experience in the power sector. Your responses will help assess how climate-related stresses affect the power sector and identify appropriate measures to strengthen its resilience.";
 const SURVEY_TITLE = "Questionnaire for Climate Risk and Resilience Assessment of India’s Power Sector";
 const key = (...parts: string[]) => parts.join("__");
 
@@ -369,13 +368,13 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
   const finalContent = view === "submitted" ? <section className="completion-page"><div className="completion-mark">✓</div><p className="eyebrow-light">Submission received</p><h2>Thank you for completing the questionnaire.</h2><p>Your response has been stored securely.</p><small>Submission ID: {submissionId}</small><p className="confidentiality">Responses are recorded confidentially and used only for aggregate risk-profile analysis.</p></section> : <section className="completion-page"><p className="eyebrow-light">Final step</p><h2>You have completed the questionnaire.</h2><p>Review or add the optional final details below, then submit your response.</p><div className="final-details"><label>{questionnaires.distribution.commentsLabel}<textarea rows={4} value={answers[key("global", "comments")] ?? ""} onChange={(event) => setAnswer(key("global", "comments"), event.target.value)} /></label><div className="details-grid">{questionnaires.distribution.respondentFields.map((label) => <label key={label}>{label}<input type={label === "Date" ? "date" : "text"} value={answers[key("global", "respondent", label.toLowerCase())] ?? ""} onChange={(event) => setAnswer(key("global", "respondent", label.toLowerCase()), event.target.value)} /></label>)}</div></div>{submitError && <p className="validation-error" role="alert">{submitError}</p>}<div className="final-actions"><button onClick={() => openView("home")}>← Back to Power System selection</button><button className="primary-action submit-response" disabled={submitting} onClick={submit}>{submitting ? "Submitting…" : "Submit Response"}</button></div><p className="confidentiality">Responses are recorded confidentially and used only for aggregate risk-profile analysis.</p></section>;
 
   return <main className={view === "consent" ? "page-shell landing-shell" : "page-shell"}><div className={view === "consent" ? "app-frame landing-frame" : "app-frame"}>
-    {view !== "consent" && <header className="hero"><div className="hero-inner header-only"><div><h1>{titleLead}<span className="title-accent">Power Sector</span>{titleTail}</h1><p>{GENERAL_INTRODUCTION}</p></div></div></header>}
+    {view !== "consent" && <header className="hero"><div className="hero-inner header-only"><div><h1>{titleLead}<span className="title-accent">Power Sector</span>{titleTail}</h1></div></div></header>}
     {view === "consent" ? <ConsentPage onContinue={continueFromConsent} /> : view === "final" || view === "submitted" ? finalContent : view === "home" ? <section className="front-page">
-      <div className="front-heading"><p>Questionnaire</p><h2>Select Power System Asset</h2><span>Please select the relevant power system asset to continue with the questionnaire.</span></div>
+      <div className="front-heading"><p>Questionnaire</p><h2>Select Power System Asset</h2></div>
       <div className="section-card-grid">
-        <button className="section-card" onClick={() => openView("generation")}><div><small>Power system asset</small><strong>Generation</strong><p>Solar, Wind and Thermal power generation assets</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
-        <button className="section-card" onClick={() => openView("transmission")}><div><small>Power system asset</small><strong>Transmission</strong><p>High-voltage transmission system assets</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
-        <button className="section-card" onClick={() => openView("distribution")}><div><small>Power system asset</small><strong>Distribution</strong><p>Distribution system assets and networks</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
+        <button className="section-card" onClick={() => openView("generation")}><strong>Generation</strong><span className="card-arrow" aria-hidden="true">→</span></button>
+        <button className="section-card" onClick={() => openView("transmission")}><strong>Transmission</strong><span className="card-arrow" aria-hidden="true">→</span></button>
+        <button className="section-card" onClick={() => openView("distribution")}><strong>Distribution</strong><span className="card-arrow" aria-hidden="true">→</span></button>
       </div>
     </section> : view === "generation" && !selectedAsset ? <section className="front-page asset-selection-page">
       <button className="back-link" onClick={() => openView("home")}><span>←</span> Back to Power System selection</button>

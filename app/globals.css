@@ -114,7 +114,7 @@ select {
 
 .hero {
   position: relative;
-  min-height: 220px;
+  min-height: 188px;
   overflow: hidden;
   padding: 30px 36px 27px;
   border-bottom: 1px solid #3b2225;
@@ -151,7 +151,7 @@ select {
 }
 
 .hero-inner.header-only {
-  min-height: 162px;
+  min-height: 130px;
   align-items: center;
 }
 
@@ -278,9 +278,9 @@ select {
 
 .section-card {
   position: relative;
-  min-height: 154px;
+  min-height: 96px;
   display: block;
-  padding: 23px 50px 22px 23px;
+  padding: 20px 50px 20px 22px;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 3px;
@@ -728,7 +728,7 @@ select {
 .section-title p {
   margin: 0 0 2px;
   color: var(--red);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 1.8px;
   text-transform: uppercase;
@@ -774,7 +774,7 @@ select {
 .eyebrow-light {
   margin: 0 0 13px;
   color: var(--red);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 1.7px;
   text-transform: uppercase;
@@ -1436,7 +1436,7 @@ textarea {
   }
 
   .section-card {
-    min-height: 138px;
+    min-height: 96px;
   }
 
   .asset-card-grid,
@@ -1550,13 +1550,13 @@ textarea {
   }
 
   .hero {
-    min-height: 210px;
+    min-height: 180px;
     padding: 28px 18px 25px;
     background-position: 62% center;
   }
 
   .hero-inner.header-only {
-    min-height: 150px;
+    min-height: 125px;
   }
 
   .hero h1 {
@@ -1583,7 +1583,7 @@ textarea {
 
   .section-card,
   .asset-card {
-    min-height: 102px;
+    min-height: 92px;
   }
 
   .front-heading h2,
