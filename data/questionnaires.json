@@ -2959,25 +2959,29 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Enhanced transformer cooling system",
-                "custom": false
+                "custom": false,
+                "unit": "INR/kVA"
               },
               {
                 "id": "measure-2",
                 "serial": "b",
                 "measure": "Liquid cooling system",
-                "custom": false
+                "custom": false,
+                "unit": "INR/kVA"
               },
               {
                 "id": "measure-3",
                 "serial": "c",
                 "measure": "Improved substation ventilation",
-                "custom": false
+                "custom": false,
+                "unit": "INR/kVA"
               },
               {
                 "id": "measure-4",
                 "serial": "d",
                 "measure": "Reflective/heat-resistant coatings",
-                "custom": false
+                "custom": false,
+                "unit": "INR/pole"
               },
               {
                 "id": "measure-5",
@@ -3062,13 +3066,15 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Pole heating systems",
-                "custom": false
+                "custom": false,
+                "unit": "INR/unit"
               },
               {
                 "id": "measure-2",
                 "serial": "b",
                 "measure": "Low-temperature lubricants",
-                "custom": false
+                "custom": false,
+                "unit": "INR/unit"
               },
               {
                 "id": "measure-3",
@@ -3153,13 +3159,15 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Advanced transformer control",
-                "custom": false
+                "custom": false,
+                "unit": "INR/kVA"
               },
               {
                 "id": "measure-2",
                 "serial": "b",
                 "measure": "Erosion-resistant pole coatings",
-                "custom": false
+                "custom": false,
+                "unit": "INR/pole"
               },
               {
                 "id": "measure-3",
@@ -3244,7 +3252,8 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Pole control upgrade",
-                "custom": false
+                "custom": false,
+                "unit": "INR/pole"
               },
               {
                 "id": "measure-2",
@@ -3343,13 +3352,15 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Flood-protection bunds/embankments",
-                "custom": false
+                "custom": false,
+                "unit": "INR/site"
               },
               {
                 "id": "measure-2",
                 "serial": "b",
                 "measure": "Foundation raising",
-                "custom": false
+                "custom": false,
+                "unit": "INR/pole"
               },
               {
                 "id": "measure-3",
@@ -3448,19 +3459,22 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Pole control upgrade",
-                "custom": false
+                "custom": false,
+                "unit": "INR/pole"
               },
               {
                 "id": "measure-2",
                 "serial": "b",
                 "measure": "Pole strengthening",
-                "custom": false
+                "custom": false,
+                "unit": "INR/pole"
               },
               {
                 "id": "measure-3",
                 "serial": "c",
                 "measure": "Typhoon-rated transformer",
-                "custom": false
+                "custom": false,
+                "unit": "INR/kVA"
               },
               {
                 "id": "measure-4",
@@ -3559,7 +3573,8 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Land preparation and slope stabilization",
-                "custom": false
+                "custom": false,
+                "unit": "INR/site"
               },
               {
                 "id": "measure-2",
@@ -3588,10 +3603,9 @@
     "respondentTitle": "Respondent Details (Optional)",
     "respondentInstruction": "Please provide your name, organization, and contact information.",
     "respondentFields": [
-      "Name",
-      "Organization",
-      "Contact",
-      "Date"
+      "Name (optional)",
+      "Organisation (optional)",
+      "Contact (optional)"
     ]
   }
 }

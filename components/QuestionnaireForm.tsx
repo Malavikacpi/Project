@@ -97,7 +97,7 @@ function MeasuresField({ question, answers, setAnswer, scope }: FieldProps) {
     const measureLabel = row.custom ? `Other suitable measure ${Number(customIndex) + 1}` : row.measure;
     return <>
     <td><div className="cost"><input type="number" min="0" aria-label={`${measureLabel} minimum cost`} placeholder="Minimum" value={answers[key(base, "minimum")] ?? ""} onChange={(event) => setAnswer(key(base, "minimum"), event.target.value)} /><input type="number" min="0" aria-label={`${measureLabel} maximum cost`} placeholder="Maximum" value={answers[key(base, "maximum")] ?? ""} onChange={(event) => setAnswer(key(base, "maximum"), event.target.value)} /></div></td>
-    <td className="unit">{row.custom && scope === "transmission" ? <input aria-label={`${measureLabel} unit`} placeholder="Unit" value={answers[key(base, "unit")] ?? ""} onChange={(event) => setAnswer(key(base, "unit"), event.target.value)} /> : (row.unit ?? q.unit)}</td>
+    <td className="unit">{row.custom ? <input aria-label={`${measureLabel} unit`} placeholder="Unit" value={answers[key(base, "unit")] ?? ""} onChange={(event) => setAnswer(key(base, "unit"), event.target.value)} /> : (row.unit ?? q.unit)}</td>
     <td><div className="percent"><input type="number" min="0" max="100" aria-label={`${measureLabel} ${q.outcomeLabel}`} placeholder="0" value={answers[key(base, "outcome")] ?? ""} onChange={(event) => setAnswer(key(base, "outcome"), event.target.value)} /><span>%</span></div></td>
   </>;
   };
@@ -117,7 +117,7 @@ function MeasuresField({ question, answers, setAnswer, scope }: FieldProps) {
     return <Fragment key={row.id}>
       <tr className="custom-measure-row">
         <td>{row.serial}</td>
-        <th scope="row"><label className="custom-measure-label"><span>Other suitable measure</span><input aria-label={`${q.number} Other suitable measure ${index + 1}`} placeholder="Other suitable measure" value={measure} onChange={(event) => setAnswer(key(base, "measure"), event.target.value)} /></label></th>
+        <th scope="row"><label className="custom-measure-label"><input aria-label={`${q.number} Other suitable measure ${index + 1}`} placeholder="Other suitable measure" value={measure} onChange={(event) => setAnswer(key(base, "measure"), event.target.value)} /></label></th>
         {costCells(row, base, index)}
       </tr>
       {started && index < MAX_CUSTOM_MEASURE_ROWS - 1 && <tr className="custom-measure-prompt-row"><td /><td colSpan={4}><fieldset className="custom-measure-prompt"><legend>Are there any other suitable measures?</legend><div><label><input type="radio" name={promptKey} value="yes" checked={answers[promptKey] === "yes"} onChange={() => setAnswer(promptKey, "yes")} /><span>Yes</span></label><label><input type="radio" name={promptKey} value="no" checked={answers[promptKey] === "no"} onChange={() => setAnswer(promptKey, "no")} /><span>No</span></label></div></fieldset></td></tr>}

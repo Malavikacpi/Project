@@ -20,7 +20,9 @@ CREATE TABLE IF NOT EXISTS questionnaire_responses (
   question_stressor text NOT NULL,
   full_question_text text NOT NULL,
   unit text,
-  selected_response text NOT NULL
+  selected_response text NOT NULL,
+  questionnaire_scope text,
+  structured_response jsonb
 );
 
 CREATE INDEX IF NOT EXISTS questionnaire_responses_submission_idx

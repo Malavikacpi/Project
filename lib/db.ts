@@ -36,11 +36,15 @@ export function ensureSchema() {
         question_stressor text NOT NULL,
         full_question_text text NOT NULL,
         unit text,
-        selected_response text NOT NULL
+        selected_response text NOT NULL,
+        questionnaire_scope text,
+        structured_response jsonb
       )
     `;
     await sql`ALTER TABLE questionnaire_responses ADD COLUMN IF NOT EXISTS system_category text`;
     await sql`ALTER TABLE questionnaire_responses ADD COLUMN IF NOT EXISTS asset_name text`;
+    await sql`ALTER TABLE questionnaire_responses ADD COLUMN IF NOT EXISTS questionnaire_scope text`;
+    await sql`ALTER TABLE questionnaire_responses ADD COLUMN IF NOT EXISTS structured_response jsonb`;
     await sql`ALTER TABLE questionnaire_submissions ADD COLUMN IF NOT EXISTS session_id uuid`;
     await sql`ALTER TABLE questionnaire_submissions ADD COLUMN IF NOT EXISTS consent_given boolean NOT NULL DEFAULT false`;
     await sql`ALTER TABLE questionnaire_submissions ADD COLUMN IF NOT EXISTS consented_at timestamptz`;

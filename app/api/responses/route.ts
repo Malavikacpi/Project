@@ -34,6 +34,7 @@ export async function POST(request: Request) {
         return Response.json({ error: `The answer for question ${item.questionNumber} is incomplete or invalid.` }, { status: 400 });
       }
       rows.push({
+        questionnaire_scope: item.scope,
         system_category: context.system,
         asset_name: context.asset,
         section_code: context.sectionCode,
@@ -44,6 +45,7 @@ export async function POST(request: Request) {
         full_question_text: context.question.text,
         unit: context.question.type === "matrix" ? context.question.rows.map((row) => row.unit).filter(Boolean).join("; ") : context.question.unit,
         selected_response: formatStructuredResponse(context.question, item.response),
+        structured_response: item.response,
       });
     }
 
@@ -63,15 +65,15 @@ export async function POST(request: Request) {
       )
       INSERT INTO questionnaire_responses (
         submission_id, system_category, asset_name, section_code, section_heading, asset_system, question_number,
-        question_stressor, full_question_text, unit, selected_response
+        question_stressor, full_question_text, unit, selected_response, questionnaire_scope, structured_response
       )
       SELECT new_submission.id, response.system_category, response.asset_name, response.section_code, response.section_heading,
         response.asset_system, response.question_number, response.question_stressor,
-        response.full_question_text, response.unit, response.selected_response
+        response.full_question_text, response.unit, response.selected_response, response.questionnaire_scope, response.structured_response
       FROM new_submission
       CROSS JOIN jsonb_to_recordset(${JSON.stringify(rows)}::jsonb) AS response(
         system_category text, asset_name text, section_code text, section_heading text, asset_system text, question_number text,
-        question_stressor text, full_question_text text, unit text, selected_response text
+        question_stressor text, full_question_text text, unit text, selected_response text, questionnaire_scope text, structured_response jsonb
       )
     `;
 
