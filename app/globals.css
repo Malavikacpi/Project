@@ -780,12 +780,16 @@ select {
   text-transform: uppercase;
 }
 
+.instruction-box strong,
 .section-title p,
 .question-kicker {
   font-family: "Whitney", Arial, Helvetica, sans-serif;
   font-style: normal;
-  font-weight: 600;
-  font-synthesis: none;
+  font-weight: 700;
+}
+
+.section-title p,
+.question-kicker {
   letter-spacing: 1.8px;
 }
 
