@@ -8,7 +8,7 @@ export type ChoiceResponse = { kind: "choice"; selection: string; other?: string
 export type MatrixResponse = { kind: "matrix"; rows: Array<{ id: string; selection: string; other?: string }> };
 export type MeasuresResponse = {
   kind: "measures";
-  rows: Array<{ id: string; measure?: string; minimum?: string; maximum?: string; cost?: string; outcome?: string }>;
+  rows: Array<{ id: string; measure?: string; minimum?: string; maximum?: string; unit?: string; cost?: string; outcome?: string }>;
 };
 export type StructuredResponse = ChoiceResponse | MatrixResponse | MeasuresResponse;
 export type SubmissionResponse = { scope: QuestionnaireScope; questionNumber: string; questionText: string; response: StructuredResponse };
@@ -82,10 +82,11 @@ export function validateStructuredResponse(question: Question, response: unknown
   return responseRows.every((row) => {
     if (!isRecord(row) || typeof row.id !== "string" || (!knownIds.has(row.id) && !(hasCustomRows && /^custom-measure-\d+$/.test(row.id))) || seenIds.has(row.id)) return false;
     seenIds.add(row.id);
-    const values = [row.measure, row.minimum, row.maximum, row.cost, row.outcome];
+    const values = [row.measure, row.minimum, row.maximum, row.unit, row.cost, row.outcome];
     if (!values.some((value) => typeof value === "string" && value.trim())) return false;
     if (values.some((value) => value !== undefined && typeof value !== "string")) return false;
     if (typeof row.measure === "string" && row.measure.length > 1000) return false;
+    if (typeof row.unit === "string" && row.unit.length > 200) return false;
     if (typeof row.minimum === "string" && row.minimum.trim() && !validNumberString(row.minimum)) return false;
     if (typeof row.maximum === "string" && row.maximum.trim() && !validNumberString(row.maximum)) return false;
     if (typeof row.cost === "string" && row.cost.trim() && !validNumberString(row.cost)) return false;
@@ -109,7 +110,7 @@ export function formatStructuredResponse(question: Question, response: Structure
     return JSON.stringify(response.rows.map((answer) => {
       const row = question.rows.find((candidate) => candidate.id === answer.id);
       const custom = !row || row.custom;
-      return { measure: custom ? (answer.measure || "Other suitable measure") : row.measure, minimumCost: answer.minimum, maximumCost: answer.maximum, cost: answer.cost, costUnit: question.unit, expectedOutcomePercent: answer.outcome };
+      return { measure: custom ? (answer.measure || "Other suitable measure") : row.measure, minimumCost: answer.minimum, maximumCost: answer.maximum, cost: answer.cost, costUnit: custom ? answer.unit : (row.unit ?? question.unit), expectedOutcomePercent: answer.outcome };
     }));
   }
   throw new Error("Response type does not match question type.");

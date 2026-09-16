@@ -16,7 +16,7 @@ export type MatrixQuestion = {
   options: string[];
 };
 
-export type MeasureRow = { id: string; serial: string; measure: string; custom: boolean };
+export type MeasureRow = { id: string; serial: string; measure: string; custom: boolean; unit?: string };
 export type MeasuresQuestion = {
   type: "measures";
   number: string;

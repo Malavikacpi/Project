@@ -2227,24 +2227,28 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Enhanced conductor cooling / higher-capacity conductor",
+                "unit": "INR/circuit-km",
                 "custom": false
               },
               {
                 "id": "measure-2",
                 "serial": "b",
                 "measure": "Dynamic line rating system",
+                "unit": "INR/circuit-km",
                 "custom": false
               },
               {
                 "id": "measure-3",
                 "serial": "c",
                 "measure": "Improved substation ventilation and transformer cooling",
+                "unit": "INR/kVA",
                 "custom": false
               },
               {
                 "id": "measure-4",
                 "serial": "d",
                 "measure": "Reflective / heat-resistant coatings and thermal shields",
+                "unit": "INR/circuit-km",
                 "custom": false
               },
               {
@@ -2330,12 +2334,14 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Anti-condensation heaters",
+                "unit": "INR/unit",
                 "custom": false
               },
               {
                 "id": "measure-2",
                 "serial": "b",
                 "measure": "Low-temperature lubricants and greases",
+                "unit": "INR/unit",
                 "custom": false
               },
               {
@@ -2421,12 +2427,14 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Waterproofing of control rooms and electrical enclosures",
+                "unit": "INR/kVA",
                 "custom": false
               },
               {
                 "id": "measure-2",
                 "serial": "b",
                 "measure": "Tower foundation strengthening",
+                "unit": "INR/tower",
                 "custom": false
               },
               {
@@ -2512,12 +2520,14 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Stockbridge dampers",
+                "unit": "INR/circuit-km",
                 "custom": false
               },
               {
                 "id": "measure-2",
                 "serial": "b",
                 "measure": "Conductor monitoring and vibration control",
+                "unit": "INR/circuit-km",
                 "custom": false
               },
               {
@@ -2616,13 +2626,15 @@
               {
                 "id": "measure-1",
                 "serial": "a",
-                "measure": "Flood-protection bunds/embankments",
+                "measure": "Waterproofing of control rooms and electrical enclosures",
+                "unit": "INR/kVA",
                 "custom": false
               },
               {
                 "id": "measure-2",
                 "serial": "b",
-                "measure": "Foundation raising",
+                "measure": "Tower foundation strengthening",
+                "unit": "INR/tower",
                 "custom": false
               },
               {
@@ -2722,24 +2734,28 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Structural retrofit / strengthening",
+                "unit": "INR/tower",
                 "custom": false
               },
               {
                 "id": "measure-2",
                 "serial": "b",
                 "measure": "Tower strengthening",
+                "unit": "INR/tower",
                 "custom": false
               },
               {
                 "id": "measure-3",
                 "serial": "c",
                 "measure": "Spacer dampers",
+                "unit": "INR/circuit-km",
                 "custom": false
               },
               {
                 "id": "measure-4",
                 "serial": "d",
                 "measure": "Reconductoring",
+                "unit": "INR/circuit-km",
                 "custom": false
               },
               {
@@ -2839,6 +2855,7 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Land preparation and slope stabilization",
+                "unit": "INR/site",
                 "custom": false
               },
               {
