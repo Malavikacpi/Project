@@ -1346,14 +1346,15 @@ textarea {
 }
 
 .consent-copy {
-  max-width: 890px;
+  width: 100%;
+  margin: auto;
 }
 
 .consent-introduction {
-  max-width: 790px;
   color: var(--ink-soft);
   font-size: 15px;
   line-height: 1.58;
+  text-align: center;
 }
 
 .consent-introduction p {
@@ -1368,7 +1369,7 @@ textarea {
 
 .consent-action-area {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   margin-top: 46px;
   padding-top: 30px;
   border-top: 1px solid var(--line-strong);
