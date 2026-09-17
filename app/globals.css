@@ -1354,7 +1354,8 @@ textarea {
   color: var(--ink-soft);
   font-size: 15px;
   line-height: 1.58;
-  text-align: center;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .consent-introduction p {
