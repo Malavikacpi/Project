@@ -737,7 +737,7 @@ select {
 .section-title h2 {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: 27px;
+  font-size: 22px;
   font-weight: 500;
   line-height: 1.2;
 }
@@ -791,19 +791,6 @@ select {
 .section-title p,
 .question-kicker {
   letter-spacing: 0;
-}
-
-.optional-badge {
-  display: inline-block;
-  margin-left: 9px;
-  padding: 2px 6px;
-  border: 1px solid #e4bfc2;
-  border-radius: 10px;
-  background: #fff7f7;
-  color: var(--maroon);
-  font-size: 12px;
-  letter-spacing: .8px;
-  vertical-align: 1px;
 }
 
 .question-list .question {
@@ -1365,7 +1352,7 @@ textarea {
 .consent-introduction {
   max-width: 790px;
   color: var(--ink-soft);
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.58;
 }
 
@@ -1483,7 +1470,7 @@ textarea {
   }
 
   .consent-introduction {
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.58;
   }
 
@@ -1593,7 +1580,7 @@ textarea {
   }
 
   .section-title h2 {
-    font-size: 26px;
+    font-size: 22px;
   }
 
   .question {

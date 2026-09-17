@@ -155,12 +155,12 @@ function buildResponse(question: Question, answers: Answers, scope: Questionnair
 function questionError(question: Question) {
   if (question.type === "choice") return `Question ${question.number}: select an answer and specify it when Other is selected.`;
   if (question.type === "matrix") return `Question ${question.number}: select one response for every row.`;
-  return `Question ${question.number}: complete the cost and outcome fields for each listed measure. Optional Other rows may remain blank.`;
+  return `Question ${question.number}: complete the cost and outcome fields for each listed measure. Other rows may remain blank.`;
 }
 
 function QuestionCard({ question, answers, setAnswer, scope, stressor }: FieldProps & { stressor: string }) {
   return <article className="question stress-question-card">
-    <div className="question-kicker">Climate stress · {stressor}{question.type === "measures" && <span className="optional-badge">Optional</span>}</div>
+    <div className="question-kicker">Climate stress · {stressor}</div>
     <div className="question-head"><span>{question.number}</span><div>
       <h3>{question.text}</h3>
       {question.type === "choice" && question.unit && <p className="unit-label">Unit <strong>{question.unit}</strong></p>}
@@ -179,10 +179,10 @@ function ConsentPage({ onContinue }: { onContinue: () => void }) {
   return <section className="front-page consent-page" aria-label="Survey information">
     <div className="consent-copy">
       <div className="consent-introduction">
-        <p>Climate Policy Initiative is conducting this survey to assess how climate-related stresses affect India’s power sector and to identify appropriate measures to strengthen its resilience and reliability.</p>
-        <p>This survey is intended solely for research and analytical purposes and should take approximately 15–20 minutes to complete.</p>
-        <p>No personal information is required to complete the survey. Any personal information that you choose to provide voluntarily will be used only for the purposes of categorizing responses by stakeholder type. Survey findings will be reported in aggregate form, and individual responses will not be attributed to identifiable participants.</p>
-        <p>By submitting this survey, you consent to the collection and processing of your responses for the purposes described above.</p>
+        <p>Dear Survey Participant,</p>
+        <p>We are conducting this survey to assess the technology-specific risks associated with emerging renewable energy technologies. The survey is intended solely for research and analytical purposes and should take approximately <strong>15-20 minutes</strong> to complete.</p>
+        <p>No personal information is required to complete the survey. Any personal information that you choose to provide voluntarily may be used only to categorize responses by stakeholder type. All survey findings will be reported in aggregated form, and no individual responses will be attributed to any identifiable participant. Survey responses will be retained only for as long as necessary to complete the analysis, after which any identifying information and individually identifiable responses will be securely deleted or irreversibly anonymized.</p>
+        <p>By submitting this survey, you consent to the collection and processing of your information as described above.</p>
         <p>We sincerely appreciate your time and valuable insights.</p>
       </div>
     </div>
