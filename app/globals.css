@@ -83,6 +83,217 @@ body {
   line-height: 1.5;
 }
 
+.admin-export-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 42px 24px;
+  background:
+    radial-gradient(circle at top right, rgba(181, 60, 54, .09), transparent 34%),
+    #f1f0ed;
+}
+
+.admin-export-frame {
+  width: min(760px, 100%);
+  overflow: hidden;
+  border: 1px solid #d7dcde;
+  border-radius: 7px;
+  background: #fbfaf7;
+  box-shadow: 0 18px 55px rgba(36, 55, 68, .11);
+}
+
+.admin-export-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 30px;
+  border-bottom: 1px solid #8d282d;
+  background: #3f171b;
+  color: #fff;
+}
+
+.admin-export-header p,
+.admin-export-header strong {
+  margin: 0;
+}
+
+.admin-export-header p {
+  font-family: var(--font-heading);
+  font-size: 18px;
+}
+
+.admin-export-header strong {
+  color: #f2c4c1;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.admin-export-content {
+  padding: 34px 38px 38px;
+}
+
+.admin-export-back {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.admin-export-back:hover {
+  color: var(--red);
+}
+
+.admin-export-eyebrow {
+  margin: 32px 0 5px;
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.7px;
+  text-transform: uppercase;
+}
+
+.admin-export-content h1 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 500;
+  line-height: 1.16;
+}
+
+.admin-export-description {
+  max-width: 590px;
+  margin: 14px 0 27px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.admin-export-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 10px;
+}
+
+.admin-export-form label {
+  grid-column: 1 / -1;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+
+.admin-export-form input {
+  min-width: 0;
+  height: 46px;
+  padding: 0 13px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.admin-export-form input:focus {
+  border-color: var(--red);
+  outline: 3px solid rgba(181, 60, 54, .12);
+}
+
+.admin-export-form button {
+  height: 46px;
+  padding: 0 18px;
+  border: 1px solid var(--red);
+  border-radius: 4px;
+  background: var(--red);
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.admin-export-form button:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+.admin-export-security {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.admin-export-status {
+  margin: 18px 0 0;
+  padding: 11px 13px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.admin-export-status.success {
+  border: 1px solid #b8d5c0;
+  background: #f1f8f3;
+  color: #2f6840;
+}
+
+.admin-export-status.error {
+  border: 1px solid #e8b9bd;
+  background: #fff1f1;
+  color: var(--red);
+}
+
+.admin-export-includes {
+  margin-top: 30px;
+  padding-top: 21px;
+  border-top: 1px solid var(--line);
+}
+
+.admin-export-includes span {
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.admin-export-includes p {
+  margin: 5px 0 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+@media (max-width: 620px) {
+  .admin-export-shell {
+    padding: 0;
+  }
+
+  .admin-export-frame {
+    min-height: 100vh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .admin-export-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+    padding: 20px;
+  }
+
+  .admin-export-content {
+    padding: 27px 20px 34px;
+  }
+
+  .admin-export-form {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-export-form label {
+    grid-column: auto;
+  }
+}
+
 .page-shell {
   min-height: 100vh;
   padding: 28px;
