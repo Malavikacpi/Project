@@ -38,11 +38,14 @@ export function getScopeMetadata(scope: QuestionnaireScope): ScopeMetadata {
 
 export function findQuestion(scope: QuestionnaireScope, questionNumber: string, questionText: string) {
   const metadata = getScopeMetadata(scope);
+  let textMatch: { stressor: string; question: Question } | null = null;
   for (const section of metadata.questionnaire.sections) {
     const question = section.questions.find((candidate) => candidate.number === questionNumber && candidate.text === questionText);
     if (question) return { ...metadata, stressor: section.title, question };
+    const matchingText = section.questions.find((candidate) => candidate.text === questionText);
+    if (matchingText) textMatch = { stressor: section.title, question: matchingText };
   }
-  return null;
+  return textMatch ? { ...metadata, ...textMatch } : null;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -110,7 +113,7 @@ export function formatStructuredResponse(question: Question, response: Structure
     return JSON.stringify(response.rows.map((answer) => {
       const row = question.rows.find((candidate) => candidate.id === answer.id);
       const custom = !row || row.custom;
-      return { measure: custom ? (answer.measure || "Other suitable measure") : row.measure, minimumCost: answer.minimum, maximumCost: answer.maximum, cost: answer.cost, costUnit: custom ? answer.unit : (row.unit ?? question.unit), expectedOutcomePercent: answer.outcome };
+      return { measure: custom ? (answer.measure || "Other suitable measure") : row.measure, minimumCost: answer.minimum, maximumCost: answer.maximum, cost: answer.cost, costUnit: custom || row.unit === "" ? answer.unit : (row.unit ?? question.unit), expectedOutcomePercent: answer.outcome };
     }));
   }
   throw new Error("Response type does not match question type.");

@@ -82,14 +82,23 @@ function expandResponse(row: DatabaseRow) {
   if (!context || !response) return [base];
 
   const question = context.question;
+  const canonicalBase = {
+    ...base,
+    system: context.system,
+    asset: context.asset,
+    sectionHeading: context.sectionHeading,
+    climateStress: context.stressor,
+    questionNumber: question.number,
+    question: question.text,
+  };
   if (question.type === "choice" && response.kind === "choice") {
-    return [{ ...base, optionId: optionId(question, response.selection), selectedResponse: selectedResponse(response.selection, response.other) }];
+    return [{ ...canonicalBase, optionId: optionId(question, response.selection), selectedResponse: selectedResponse(response.selection, response.other) }];
   }
   if (question.type === "matrix" && response.kind === "matrix") {
     return response.rows.map((answer) => {
       const matrixRow = question.rows.find((candidate) => candidate.id === answer.id);
       const selection = selectedResponse(answer.selection, answer.other);
-      return { ...base, optionId: optionId(question, answer.selection), selectedResponse: matrixRow ? `${matrixRow.label}: ${selection}` : selection, unit: matrixRow?.unit ?? base.unit };
+      return { ...canonicalBase, optionId: optionId(question, answer.selection), selectedResponse: matrixRow ? `${matrixRow.label}: ${selection}` : selection, unit: matrixRow?.unit ?? canonicalBase.unit };
     });
   }
   if (question.type === "measures" && response.kind === "measures") {
@@ -97,18 +106,18 @@ function expandResponse(row: DatabaseRow) {
       const source = question.rows.find((candidate) => candidate.id === answer.id);
       const custom = !source || source.custom;
       return {
-        ...base,
+        ...canonicalBase,
         selectedResponse: "",
         measureId: source ? measureId(question.number, source.serial) : customMeasureId(question.number, answer.id),
         measure: custom ? (answer.measure || "Other suitable measure") : source.measure,
         minimum: answer.minimum ?? answer.cost ?? "",
         maximum: answer.maximum ?? "",
-        unit: custom ? (answer.unit ?? "") : (source.unit ?? question.unit),
+        unit: custom || source.unit === "" ? (answer.unit ?? "") : (source.unit ?? question.unit),
         effectiveness: answer.outcome ?? "",
       };
     });
   }
-  return [base];
+  return [canonicalBase];
 }
 
 export async function GET(request: Request) {

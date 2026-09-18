@@ -49,7 +49,6 @@ export default function AdminExportPage() {
   return <main className="admin-export-shell">
     <section className="admin-export-frame" aria-labelledby="export-title">
       <header className="admin-export-header">
-        <p>Climate Policy Initiative</p>
         <strong>Response administration</strong>
       </header>
       <div className="admin-export-content">

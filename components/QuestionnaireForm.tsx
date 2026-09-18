@@ -95,9 +95,10 @@ function MeasuresField({ question, answers, setAnswer, scope }: FieldProps) {
 
   const costCells = (row: MeasureRow, base: string, customIndex?: number) => {
     const measureLabel = row.custom ? `Other suitable measure ${Number(customIndex) + 1}` : row.measure;
+    const editableUnit = row.custom || row.unit === "";
     return <>
     <td><div className="cost"><input type="number" min="0" aria-label={`${measureLabel} minimum cost`} placeholder="Minimum" value={answers[key(base, "minimum")] ?? ""} onChange={(event) => setAnswer(key(base, "minimum"), event.target.value)} /><input type="number" min="0" aria-label={`${measureLabel} maximum cost`} placeholder="Maximum" value={answers[key(base, "maximum")] ?? ""} onChange={(event) => setAnswer(key(base, "maximum"), event.target.value)} /></div></td>
-    <td className="unit">{row.custom ? <input aria-label={`${measureLabel} unit`} placeholder="Unit" value={answers[key(base, "unit")] ?? ""} onChange={(event) => setAnswer(key(base, "unit"), event.target.value)} /> : (row.unit ?? q.unit)}</td>
+    <td className="unit">{editableUnit ? <input aria-label={`${measureLabel} unit`} placeholder="Unit" value={answers[key(base, "unit")] ?? ""} onChange={(event) => setAnswer(key(base, "unit"), event.target.value)} /> : (row.unit ?? q.unit)}</td>
     <td><div className="percent"><input type="number" min="0" max="100" aria-label={`${measureLabel} ${q.outcomeLabel}`} placeholder="0" value={answers[key(base, "outcome")] ?? ""} onChange={(event) => setAnswer(key(base, "outcome"), event.target.value)} /><span>%</span></div></td>
   </>;
   };
@@ -148,7 +149,7 @@ function buildResponse(question: Question, answers: Answers, scope: Questionnair
     const base = key(scope, question.number, row.id);
     return { id: row.id, custom: row.custom, measure: answers[key(base, "measure")]?.trim(), minimum: answers[key(base, "minimum")]?.trim(), maximum: answers[key(base, "maximum")]?.trim(), unit: answers[key(base, "unit")]?.trim(), cost: answers[key(base, "cost")]?.trim(), outcome: answers[key(base, "outcome")]?.trim() };
   });
-  const providedRows = rows.filter((answer) => answer.custom ? [answer.measure, answer.minimum, answer.maximum, answer.unit, answer.cost, answer.outcome].some(Boolean) : [answer.minimum, answer.maximum, answer.outcome].some(Boolean)).map(({ custom: _custom, ...answer }) => answer);
+  const providedRows = rows.filter((answer) => answer.custom ? [answer.measure, answer.minimum, answer.maximum, answer.unit, answer.cost, answer.outcome].some(Boolean) : [answer.minimum, answer.maximum, answer.unit, answer.outcome].some(Boolean)).map(({ custom: _custom, ...answer }) => answer);
   return providedRows.length ? { kind: "measures", rows: providedRows } : null;
 }
 

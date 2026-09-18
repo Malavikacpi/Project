@@ -2334,14 +2334,14 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Anti-condensation heaters",
-                "unit": "INR/unit",
+                "unit": "",
                 "custom": false
               },
               {
                 "id": "measure-2",
                 "serial": "b",
                 "measure": "Low-temperature lubricants and greases",
-                "unit": "INR/unit",
+                "unit": "",
                 "custom": false
               },
               {
@@ -2855,7 +2855,7 @@
                 "id": "measure-1",
                 "serial": "a",
                 "measure": "Land preparation and slope stabilization",
-                "unit": "INR/site",
+                "unit": "",
                 "custom": false
               },
               {
@@ -3343,7 +3343,7 @@
           },
           {
             "type": "measures",
-            "number": "5.3",
+            "number": "5.4",
             "text": "For each flood-resilience measure below, estimate the implementation cost and provide the expected reduction in flood-related failure risk.",
             "outcomeLabel": "Expected Reduction in Failure Risk (%)",
             "unit": "INR per MW",
@@ -3353,7 +3353,7 @@
                 "serial": "a",
                 "measure": "Flood-protection bunds/embankments",
                 "custom": false,
-                "unit": "INR/site"
+                "unit": ""
               },
               {
                 "id": "measure-2",
@@ -3390,7 +3390,7 @@
         "questions": [
           {
             "type": "matrix",
-            "number": "6.",
+            "number": "6.1",
             "text": "What is the estimated probability of significant operational, electrical, or structural failure in distribution systems at cyclone intensities I1 and I2?",
             "firstColumn": "Cyclone Speed (m/s)",
             "rows": [
@@ -3434,7 +3434,7 @@
           },
           {
             "type": "choice",
-            "number": "6.4",
+            "number": "6.3",
             "text": "Following a cyclone-induced protective shutdown without major physical damage, what restoration time is typically required before the distribution system can resume normal operation?",
             "unit": "hours/days",
             "options": [
@@ -3450,7 +3450,7 @@
           },
           {
             "type": "measures",
-            "number": "6.5",
+            "number": "6.4",
             "text": "For each cyclone-resilience measure below, estimate the implementation cost and provide the expected reduction in cyclone-related failure risk.",
             "outcomeLabel": "Expected Reduction in Failure Risk (%)",
             "unit": "INR per MW",
@@ -3574,7 +3574,7 @@
                 "serial": "a",
                 "measure": "Land preparation and slope stabilization",
                 "custom": false,
-                "unit": "INR/site"
+                "unit": ""
               },
               {
                 "id": "measure-2",
