@@ -3067,14 +3067,14 @@
                 "serial": "a",
                 "measure": "Pole heating systems",
                 "custom": false,
-                "unit": "INR/unit"
+                "unit": "INR/pole"
               },
               {
                 "id": "measure-2",
                 "serial": "b",
                 "measure": "Low-temperature lubricants",
                 "custom": false,
-                "unit": "INR/unit"
+                "unit": ""
               },
               {
                 "id": "measure-3",
