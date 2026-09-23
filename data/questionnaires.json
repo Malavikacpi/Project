@@ -2146,6 +2146,97 @@
               ]
             }
           ]
+        },
+        {
+          "number": "8",
+          "title": "Water Stress",
+          "questions": [
+            {
+              "type": "choice",
+              "number": "8.1",
+              "text": "Below what level of water availability does the thermal power plant typically begin to experience derating?",
+              "unit": "Available water as % of normal plant water requirement",
+              "options": [
+                "More than 90%",
+                "75–90%",
+                "50–75%",
+                "25–50%",
+                "Less than 25%",
+                "Other (please specify)",
+                "Not sure/insufficient data"
+              ]
+            },
+            {
+              "type": "choice",
+              "number": "8.2",
+              "text": "Below the water-availability threshold, what is the typical reduction in power output for every additional 10 percentage-point decrease in water availability?",
+              "unit": "% power-output reduction per 10 percentage-point decrease in water availability",
+              "options": [
+                "Less than 1%",
+                "1–2%",
+                "2–5%",
+                "5–10%",
+                "More than 10%",
+                "Other (please specify)",
+                "Not sure/insufficient data"
+              ]
+            },
+            {
+              "type": "choice",
+              "number": "8.3",
+              "text": "What is the maximum reduction in thermal power generation typically observed because of insufficient water availability before the plant enters complete shutdown?",
+              "unit": "%",
+              "options": [
+                "Less than 10%",
+                "10–20%",
+                "20–30%",
+                "30–50%",
+                "More than 50%",
+                "100% or complete shutdown",
+                "Other (please specify)",
+                "Not sure/insufficient data"
+              ]
+            },
+            {
+              "type": "measures",
+              "number": "8.4",
+              "text": "For each water-availability resilience measure below, estimate the implementation cost and expected reduction in water-availability-related generation losses in the thermal power plant.",
+              "outcomeLabel": "Expected Reduction in Power Loss (%)",
+              "unit": "INR per MW",
+              "rows": [
+                {
+                  "id": "measure-1",
+                  "serial": "a",
+                  "measure": "Dry cooling or air-cooled condenser system",
+                  "custom": false
+                },
+                {
+                  "id": "measure-2",
+                  "serial": "b",
+                  "measure": "Hybrid wet-dry cooling system",
+                  "custom": false
+                },
+                {
+                  "id": "measure-3",
+                  "serial": "c",
+                  "measure": "Wastewater recovery, recycling and reuse",
+                  "custom": false
+                },
+                {
+                  "id": "measure-4",
+                  "serial": "d",
+                  "measure": "Additional water-storage capacity",
+                  "custom": false
+                },
+                {
+                  "id": "measure-5",
+                  "serial": "e",
+                  "measure": "Other suitable measure (please specify):",
+                  "custom": true
+                }
+              ]
+            }
+          ]
         }
       ],
       "commentsLabel": "Any other comments (Optional):",
