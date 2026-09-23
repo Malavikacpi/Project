@@ -956,9 +956,9 @@ select {
 .daily-wind-note {
   display: block;
   margin-top: 4px;
-  color: var(--ink-soft);
-  font-size: 11px;
-  font-style: italic;
+  color: var(--muted);
+  font-size: 14px;
+  font-style: normal;
   line-height: 1.35;
 }
 

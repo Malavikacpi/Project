@@ -212,7 +212,7 @@ type QuestionnaireBodyProps = {
 function QuestionnaireBody({ questionnaire, sectionCode, displayTitle, scope, answers, setAnswer, stressIndex, setStressIndex, phase, setPhase, onMoveSections, onFinish }: QuestionnaireBodyProps) {
   const safeIndex = Math.min(stressIndex, questionnaire.sections.length - 1);
   const currentSection = questionnaire.sections[safeIndex];
-  const dailyWindHeight = scope === "wind" || scope === "thermal" ? "100 m" : "10 m";
+  const dailyWindHeight = scope === "wind" || scope === "transmission" ? "100 m" : "10 m";
   const [validationError, setValidationError] = useState("");
 
   const validateStress = () => {
@@ -248,7 +248,7 @@ function QuestionnaireBody({ questionnaire, sectionCode, displayTitle, scope, an
     </section>
     <div className="toolbar"><div><span className="status-dot" /> Responses are saved in this browser session</div><strong>Climate stress {safeIndex + 1} of {questionnaire.sections.length}</strong></div>
     <section className="section stress-section">
-      <div className="section-title"><span>{currentSection.number.padStart(2, "0")}</span><div><p>Climate stress</p><h2>{currentSection.number}. {currentSection.title}</h2>{currentSection.title === "Daily Wind Stress" && <small className="daily-wind-note">Note: Wind speed at a height of {dailyWindHeight} is considered.</small>}</div></div>
+      <div className="section-title"><span>{currentSection.number.padStart(2, "0")}</span><div><p>Climate stress</p><h2>{currentSection.number}. {currentSection.title}</h2>{currentSection.title === "Daily Wind Stress" && <span className="daily-wind-note">Note: Wind speed at a height of {dailyWindHeight} is considered.</span>}</div></div>
       <div className="question-list">{currentSection.questions.map((question, index) => <QuestionCard question={question} answers={answers} setAnswer={setAnswer} scope={scope} stressor={currentSection.title} key={`${question.number}-${question.text}-${index}`} />)}</div>
       {validationError && <p className="validation-error" role="alert">{validationError}</p>}
       <div className="question-navigation stress-navigation">
