@@ -64,8 +64,8 @@ function baseResponse(row: DatabaseRow) {
     selectedResponse: row.selected_response,
     measureId: "",
     measure: "",
-    minimum: "",
-    maximum: "",
+    capex: "",
+    opex: "",
     unit: row.unit ?? "",
     effectiveness: "",
     name: detail(respondent, "Name (optional)", "Name"),
@@ -110,8 +110,8 @@ function expandResponse(row: DatabaseRow) {
         selectedResponse: "",
         measureId: source ? measureId(question.number, source.serial) : customMeasureId(question.number, answer.id),
         measure: custom ? (answer.measure || "Other suitable measure") : source.measure,
-        minimum: answer.minimum ?? answer.cost ?? "",
-        maximum: answer.maximum ?? "",
+        capex: answer.capex ?? "",
+        opex: answer.opex ?? "",
         unit: custom || source.unit === "" ? (answer.unit ?? "") : (source.unit ?? question.unit),
         effectiveness: answer.outcome ?? "",
       };
@@ -161,8 +161,8 @@ export async function GET(request: Request) {
     measuresSheet.columns = [
       { header: "Measure ID", key: "measureId", width: 16 }, { header: "System", key: "system", width: 18 },
       { header: "Asset", key: "asset", width: 24 }, { header: "Climate Stress", key: "climateStress", width: 24 },
-      { header: "Measure", key: "measure", width: 55 }, { header: "Minimum", key: "minimum", width: 16 },
-      { header: "Maximum", key: "maximum", width: 16 }, { header: "Unit", key: "unit", width: 22 },
+      { header: "Measure", key: "measure", width: 55 }, { header: "CAPEX", key: "capex", width: 16 },
+      { header: "OPEX", key: "opex", width: 16 }, { header: "Unit", key: "unit", width: 22 },
       { header: "Effectiveness Metric", key: "effectivenessMetric", width: 40 },
     ];
     measuresSheet.addRows(master.resilienceMeasures);
@@ -176,7 +176,7 @@ export async function GET(request: Request) {
       { header: "Question No.", key: "questionNumber", width: 16 }, { header: "Question", key: "question", width: 70 },
       { header: "Option ID", key: "optionId", width: 14 }, { header: "Selected Response", key: "selectedResponse", width: 55 },
       { header: "Measure ID", key: "measureId", width: 16 }, { header: "Measure", key: "measure", width: 55 },
-      { header: "Minimum", key: "minimum", width: 16 }, { header: "Maximum", key: "maximum", width: 16 },
+      { header: "CAPEX", key: "capex", width: 16 }, { header: "OPEX", key: "opex", width: 16 },
       { header: "Unit", key: "unit", width: 22 }, { header: "Effectiveness", key: "effectiveness", width: 18 },
       { header: "Name", key: "name", width: 24 }, { header: "Organisation", key: "organisation", width: 28 },
       { header: "Contact", key: "contact", width: 28 },

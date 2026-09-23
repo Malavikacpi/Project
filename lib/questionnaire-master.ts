@@ -24,8 +24,8 @@ export type ResilienceMeasureMasterRow = {
   asset: string;
   climateStress: string;
   measure: string;
-  minimum: string;
-  maximum: string;
+  capex: string;
+  opex: string;
   unit: string;
   effectivenessMetric: string;
 };
@@ -94,8 +94,8 @@ export function buildQuestionnaireMaster() {
             asset: metadata.asset,
             climateStress: section.title,
             measure: row.measure,
-            minimum: "",
-            maximum: "",
+            capex: "",
+            opex: "",
             unit: row.unit ?? question.unit,
             effectivenessMetric: question.outcomeLabel,
           }));
