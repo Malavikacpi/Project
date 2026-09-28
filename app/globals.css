@@ -1634,6 +1634,7 @@ textarea {
 
   .app-sidebar {
     position: static;
+    min-width: 0;
     padding: 18px;
     border: 1px solid var(--line);
     border-radius: 8px;
@@ -1653,6 +1654,7 @@ textarea {
 
   .stressor-nav {
     display: flex;
+    max-width: 100%;
     overflow-x: auto;
   }
 
