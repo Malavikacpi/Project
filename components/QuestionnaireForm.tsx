@@ -370,11 +370,11 @@ export default function QuestionnaireForm({ questionnaires }: { questionnaires: 
   return <main className="page-shell"><div className="app-frame">
     <header className="hero"><div className="hero-inner header-only"><div><h1>{titleLead}<span className="title-accent">Power Sector</span>{titleTail}</h1></div></div></header>
     {view === "consent" ? <ConsentPage onContinue={continueFromConsent} /> : view === "final" || view === "submitted" ? finalContent : view === "home" ? <section className="front-page">
-      <div className="front-heading"><p>Questionnaire</p><h2>Select Power System Asset</h2><span>Please select the relevant power system asset to continue with the questionnaire.</span></div>
+      <div className="front-heading"><p>Questionnaire</p><h2>Select the Relevant Power System Asset</h2><span>Please select the relevant power system asset to continue with the questionnaire.</span></div>
       <div className="section-card-grid">
-        <button className="section-card" onClick={() => openView("generation")}><div><small>Power system asset</small><strong>Generation</strong><p>Solar, Wind and Thermal power generation assets</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
-        <button className="section-card" onClick={() => openView("transmission")}><div><small>Power system asset</small><strong>Transmission</strong><p>High-voltage transmission system assets</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
-        <button className="section-card" onClick={() => openView("distribution")}><div><small>Power system asset</small><strong>Distribution</strong><p>Distribution system assets and networks</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
+        <button className="section-card" onClick={() => openView("generation")}><div><strong>Generation</strong><p>Solar, Wind and Thermal power generation assets</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
+        <button className="section-card" onClick={() => openView("transmission")}><div><strong>Transmission</strong><p>High-voltage transmission system assets</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
+        <button className="section-card" onClick={() => openView("distribution")}><div><strong>Distribution</strong><p>Distribution system assets and networks</p></div><span className="card-arrow" aria-hidden="true">→</span></button>
       </div>
     </section> : view === "generation" && !selectedAsset ? <section className="front-page asset-selection-page">
       <button className="back-link" onClick={() => openView("home")}><span>←</span> Back to Power System selection</button>
