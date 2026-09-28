@@ -182,7 +182,7 @@ function ConsentPage({ onContinue }: { onContinue: () => void }) {
     <div className="consent-copy">
       <div className="consent-introduction">
         <p>Dear Survey Participant,</p>
-        <p>We are conducting this survey to assess the technology-specific risks associated with emerging renewable energy technologies. The survey is intended solely for research and analytical purposes and should take approximately <strong>15-20 minutes</strong> to complete.</p>
+        <p>We are conducting this survey to understand climate-related risks and their impacts on the power sector, as well as the resilience measures being adopted to address these risks. The survey is intended solely for research and analytical purposes and should take approximately <strong>15-20 minutes</strong> to complete.</p>
         <p>No personal information is required to complete the survey. Any personal information that you choose to provide voluntarily may be used only to categorize responses by stakeholder type. All survey findings will be reported in aggregated form, and no individual responses will be attributed to any identifiable participant. Survey responses will be retained only for as long as necessary to complete the analysis, after which any identifying information and individually identifiable responses will be securely deleted or irreversibly anonymized.</p>
         <p>By submitting this survey, you consent to the collection and processing of your information as described above.</p>
         <p>We sincerely appreciate your time and valuable insights.</p>
